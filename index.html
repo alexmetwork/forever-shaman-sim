@@ -2,10 +2,10 @@
 <style>
 :root{--bg:#0c0b14;--panel:#171322;--panel2:#201a2d;--line:#352c48;--txt:#eeeaf6;--mut:#9b93aa;--pur:#a982ff;--gold:#f0c86a;--green:#62d394;--red:#ff6b7d;--blue:#66b8ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -20%,#2a1841 0,#0c0b14 40%);color:var(--txt);font:13px Inter,Segoe UI,Arial,sans-serif}.app{max-width:1450px;margin:auto;padding:18px}.head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.head h1{font-size:20px;margin:0 auto 0 0}.badge{padding:5px 8px;border:1px solid var(--line);border-radius:6px;color:var(--mut)}.tabs{display:flex;gap:6px;margin-bottom:12px}.tab,.btn,select,input{background:#211a2d;color:var(--txt);border:1px solid #403452;border-radius:6px;padding:7px 9px}.tab.active,.btn.primary{border-color:#8e6ed0;background:#35264e}.btn{cursor:pointer}.btn:hover{border-color:#755d96}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.card{background:rgba(23,19,34,.96);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:12px}.card h2{font-size:13px;margin:0 0 10px;color:#d9ccec}.fields{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.field label{display:block;color:var(--mut);font-size:11px;margin-bottom:4px}.field input,.field select{width:100%}.checks{display:flex;flex-wrap:wrap;gap:7px}.check{padding:6px 8px;background:#201a2b;border:1px solid #352d44;border-radius:5px}.metricrow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.metric{background:#100e18;border:1px solid #30283f;padding:10px;border-radius:7px}.metric b{display:block;font-size:20px;color:#fff}.metric span{font-size:10px;color:var(--mut)}.talents{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.tree{background:#100e18;border:1px solid #30283f;border-radius:7px;padding:8px}.tree h3{font-size:12px;margin:0 0 7px}.tg{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:58px;gap:4px}.tal{font-size:9px;line-height:1.05;padding:5px;background:#181321;border:1px solid #332a42;border-radius:5px;cursor:pointer;position:relative;overflow:hidden}.tal.on{border-color:var(--gold);box-shadow:inset 0 0 0 1px #8d6c2b}.tal.lock{opacity:.25}.rank{position:absolute;right:3px;bottom:2px;background:#050407;padding:1px 3px;border-radius:3px}.priority .row{display:grid;grid-template-columns:28px 1fr 115px 30px 30px;gap:5px;align-items:center;margin:5px 0}.priority .row select{padding:5px}.drag{color:var(--mut);text-align:center}.result{height:180px;display:flex;align-items:flex-end;gap:5px;border-bottom:1px solid #453958;padding:10px 4px 0}.bar{flex:1;min-width:20px;background:linear-gradient(#b287ff,#5b3c91);position:relative;border-radius:3px 3px 0 0}.bar span{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--mut);white-space:nowrap}.bar i{position:absolute;top:-17px;width:100%;text-align:center;font-style:normal;font-size:9px}.log{max-height:180px;overflow:auto;background:#0d0b13;border:1px solid #2e263b;border-radius:6px;padding:8px;font-family:Consolas,monospace;font-size:10px;color:#bdb5c9}.warn{color:#f2b55d}.ok{color:var(--green)}.source{font-size:10px;color:var(--mut);line-height:1.4}.footer{color:var(--mut);font-size:10px;margin-top:8px}@media(max-width:950px){.grid{grid-template-columns:1fr}.fields{grid-template-columns:repeat(2,1fr)}.metricrow{grid-template-columns:repeat(2,1fr)}}
 
-html{scroll-behavior:smooth}.tabs .tab{cursor:pointer}.tabs .tab:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}.subhead{font-size:12px;color:#d9ccec;margin:16px 0 6px}.buffgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.buff{background:#201a2b;border:1px solid #352d44;border-radius:6px;display:flex;justify-content:space-between;align-items:center;gap:9px;padding:8px;flex-wrap:wrap}.buffvalue{white-space:nowrap;color:var(--mut);font-size:11px}.buffvalue input{width:60px;padding:3px;text-align:right}.build-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.build-tools .footer{margin:0}.tg{grid-template-columns:1fr;grid-auto-rows:auto;gap:0}.tier-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:5px 0 10px}.tier-label{font-size:10px;color:var(--mut);border-top:1px solid #30283f;padding-top:6px;margin-top:6px}.tal{min-width:0;min-height:78px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;text-align:center;font-size:9px;padding:6px 3px 18px;overflow:visible}.tal img{width:32px;height:32px;border:1px solid #5c5270;border-radius:4px;object-fit:cover;background:#15121c}.tal .tal-name{line-height:1.15;overflow-wrap:anywhere}.tal .rank{right:3px;bottom:2px}.tal:focus-visible{outline:2px solid var(--gold)}@media(max-width:720px){.buffgrid{grid-template-columns:1fr}.talents{grid-template-columns:1fr}.head{flex-wrap:wrap}.head h1{width:100%}}@media(min-width:721px) and (max-width:1150px){.talents{grid-template-columns:1fr 1fr}}
+html{scroll-behavior:smooth}.tabs .tab{cursor:pointer}.tabs .tab:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}.subhead{font-size:12px;color:#d9ccec;margin:16px 0 6px}.buffgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.buff{background:#201a2b;border:1px solid #352d44;border-radius:6px;display:flex;justify-content:space-between;align-items:center;gap:9px;padding:8px;flex-wrap:wrap}.buffvalue{white-space:nowrap;color:var(--mut);font-size:11px}.buffvalue input{width:60px;padding:3px;text-align:right}.build-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.build-tools .footer{margin:0}.tg{grid-template-columns:1fr;grid-auto-rows:auto;gap:0}.tier-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:5px 0 10px}.tier-label{font-size:10px;color:var(--mut);border-top:1px solid #30283f;padding-top:6px;margin-top:6px}.tal{min-width:0;min-height:78px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;text-align:center;font-size:9px;padding:6px 3px 18px;overflow:visible}.tal img{width:32px;height:32px;border:1px solid #5c5270;border-radius:4px;object-fit:cover;background:#15121c}.tal .tal-name{line-height:1.15;overflow-wrap:anywhere}.tal .rank{right:3px;bottom:2px}.tal:focus-visible{outline:2px solid var(--gold)}.tal .tal-name{color:#f5f0ff;font-weight:600;text-shadow:0 1px 3px #000;font-size:10px;line-height:1.24}.tal.lock{opacity:1;border-color:#282434;background:#15121c}.tal.lock img{filter:grayscale(.55);opacity:.46}.tal.lock .tal-name{color:#ded6ea}.tal{min-height:102px;overflow:hidden}.tier-row{align-items:stretch}@media(max-width:720px){.buffgrid{grid-template-columns:1fr}.talents{grid-template-columns:1fr}.head{flex-wrap:wrap}.head h1{width:100%}}@media(min-width:721px) and (max-width:1150px){.talents{grid-template-columns:1fr 1fr}}
 </style></head><body><div class="app">
-<div class="head"><h1>⚡ Forever Shaman Lab <small style="color:#8f849d">Enhancement simulator prototype</small></h1><span class="badge">v0.8 · Talents / buffs</span><span class="badge" id="evidence">Evidence: experimental</span></div>
-<nav class="tabs" aria-label="Jump to section"><button type="button" class="tab active" data-jump="simulate-section">SIMULATE</button><button type="button" class="tab" data-jump="build-section">BUILD</button><button type="button" class="tab" data-jump="compare-section">COMPARE</button><button type="button" class="tab" data-jump="evidence-section">EVIDENCE</button></nav>
+<div class="head"><h1>⚡ Forever Shaman Lab <small style="color:#8f849d">Enhancement simulator prototype</small></h1><span class="badge">v0.9 · Combat model</span><span class="badge" id="evidence">Evidence: experimental</span></div>
+
 <div class="grid"><main>
 <section class="card" id="simulate-section"><h2>Character & encounter</h2><div class="fields">
 <div class="field"><label>Level</label><input id="lvl" type="number" value="60" min="20" max="60"></div><div class="field"><label>Fight length, sec</label><input id="dur" type="number" value="120"></div><div class="field"><label>Iterations</label><input id="iters" type="number" value="5000" step="500"></div><div class="field"><label>Targets</label><input id="targets" type="number" value="1" min="1" max="10"></div>
@@ -34,26 +34,35 @@ html{scroll-behavior:smooth}.tabs .tab{cursor:pointer}.tabs .tab:focus-visible,.
 <div class="field"><label>Windfury ICD (test)</label><select id="wficd"><option value="0" selected>No ICD (working default)</option><option value="1.5">1.5 sec — test</option><option value="3">3 sec — legacy test</option></select></div>
 <div class="field"><label>Maelstrom spender</label><select id="mwsp"><option value="5">5 stacks (instant LB)</option></select></div>
 <div class="field"><label>Stormstrike CD</label><input id="sscd" type="number" value="8" min="6" max="10" step=".5"></div>
-<div class="field"><label>Tier 1 5P</label><select id="t15"><option value="0">Off</option><option value="1">On (-0.5s SS)</option></select></div><div class="field"><label>Policy</label><select id="policy"><option>Strict-ish</option><option>Experimental</option></select></div></div>
+<div class="field"><label>Tier 1 5P</label><select id="t15"><option value="0">Off</option><option value="1">On (-0.5s SS)</option></select></div><div class="field"><label>Mana regeneration (mana/sec)</label><input id="manaRegen" type="number" value="8" min="0" step="1"></div></div>
 <div class="checks" style="margin-top:9px"><label class="check"><input id="far" type="checkbox" checked> Rage of the Farseer</label></div>
 <h3 class="subhead">Group &amp; raid buffs</h3><p class="footer">Check a buff and adjust its rank/value if necessary. Prefilled numbers are <b>Classic-derived examples</b>, not independently confirmed Forever values. Enter <b>unbuffed</b> stats above; the flat AP field should not include the AP generated from Strength.</p>
-<div class="buffgrid">
+<div class="checks" style="margin:10px 0"><label class="check"><input id="apBuffsStack" type="checkbox" checked> Classic-style: stack Battle Shout + Blessing of Might (uncheck to test no-stack)</label></div><div class="buffgrid">
 <label class="buff"><span><input id="battleShout" type="checkbox"> Warrior · Battle Shout</span><span class="buffvalue">+<input id="bsValue" type="number" value="232" min="0" aria-label="Battle Shout AP"> AP</span></label>
 <label class="buff"><span><input id="arcaneInt" type="checkbox"> Mage · Arcane Intellect</span><span class="buffvalue">+<input id="aiValue" type="number" value="31" min="0" aria-label="Arcane Intellect INT"> INT</span></label>
 <label class="buff"><span><input id="markWild" type="checkbox"> Druid · Mark of the Wild</span><span class="buffvalue">+<input id="motwValue" type="number" value="12" min="0" aria-label="Mark of Wild stats"> STR/AGI/INT</span></label>
 <label class="buff"><span><input id="blessingMight" type="checkbox"> Paladin · Blessing of Might</span><span class="buffvalue">+<input id="bomValue" type="number" value="185" min="0" aria-label="Blessing of Might AP"> AP</span></label>
-<label class="buff"><span><input id="trueshot" type="checkbox"> Hunter · Trueshot Aura</span><span class="buffvalue">+<input id="tsaValue" type="number" value="100" min="0" aria-label="Trueshot Aura AP"> AP</span></label>
+
 <label class="buff"><span><input id="soe" type="checkbox"> Shaman · Strength of Earth</span><span class="buffvalue">+<input id="soeValue" type="number" value="77" min="0" aria-label="Strength of Earth STR"> STR</span></label>
 <label class="buff"><span><input id="goa" type="checkbox"> Shaman · Grace of Air</span><span class="buffvalue">+<input id="goaValue" type="number" value="77" min="0" aria-label="Grace of Air AGI"> AGI</span></label>
 <label class="buff"><span><input id="kings" type="checkbox"> Paladin · Blessing of Kings</span><span class="buffvalue">+<input id="kingsValue" type="number" value="10" min="0" max="100" aria-label="Blessing of Kings percent"> % primary</span></label>
-</div><p class="footer" id="buffSummary">No raid buffs selected. Weapon-imbue totems removed because their effects do not stack with your personal imbue.</p></section>
-<section class="card" id="build-section"><h2>Build editor <span id="pts" style="color:var(--gold)"></span></h2><div class="build-tools"><button class="btn primary" id="loadPreset" type="button">Load 17/34 raid starter</button><button class="btn" id="clearTalents" type="button">Clear talents</button><span class="footer" id="presetStatus">Editable example, not a verified optimal build.</span></div><div class="talents" id="talents"></div><div class="footer">Left click adds, right click removes. The three trees follow the supplied talent list. September 24 patch: Elemental Alacrity moved to 10-point tier, Elemental Fury to 25-point tier. Exact column positions/prerequisites still require beta confirmation. Icons are illustrative Warcraft spell art; a few may differ from actual Forever icons. Only implemented talent effects change DPS.</div></section>
+</div><p class="footer" id="buffSummary">No raid buffs selected. Battle Shout and Blessing of Might use Classic-style stacking by default; change if Forever logs contradict it.</p></section>
+<section class="card"><h2>Combat-model controls <span class="badge">Experimental</span></h2><p class="footer">Explicit assumptions for level-60 vs level-63 boss. Change these after testing the combat log. Values are not claimed to be final Forever server formulas.</p><div class="fields">
+<div class="field"><label>Maelstrom chance / landed melee hit, %</label><input id="mwChance" type="number" min="0" max="100" value="20" step="1"></div>
+<div class="field"><label>Boss dodge from behind, %</label><input id="bossDodge" type="number" min="0" max="25" value="6.5" step=".5"></div>
+<div class="field"><label>Glancing blow chance (white), %</label><input id="glance" type="number" min="0" max="100" value="40" step="1"></div>
+<div class="field"><label>Glancing damage multiplier</label><input id="glanceDmg" type="number" min="0" max="1" value=".7" step=".05"></div>
+<div class="field"><label>Flametongue damage / hit</label><input id="ftDmg" type="number" min="0" value="35" step="1"></div>
+<div class="field"><label>Rockbiter AP (before talent)</label><input id="rbAP" type="number" min="0" value="0" step="1"></div>
+<div class="field"><label>Spell hit % (separate)</label><input id="spellHit" type="number" min="0" max="100" value="83" step="1"></div>
+</div><p class="footer">Windfury extra attacks use independent melee hit/crit rolls; they cannot trigger another Windfury, but can trigger Maelstrom. Glancing applies only to white attacks. Boss dodge and Maelstrom rates are configurable hypotheses.</p></section>
+<section class="card" id="build-section"><h2>Build editor <span id="pts" style="color:var(--gold)"></span></h2><div class="build-tools"><button class="btn primary" id="loadPreset" type="button">Load 17/34 raid starter</button><button class="btn" id="clearTalents" type="button">Clear talents</button><span class="footer" id="presetStatus">Editable example, not a verified optimal build.</span></div><div class="talents" id="talents"></div><div class="footer">Left click adds, right click removes. The three trees follow the supplied talent list. September 24 patch: Elemental Alacrity moved to 10-point tier, Elemental Fury to 25-point tier. Exact column positions/prerequisites still require beta confirmation. Icons are illustrative Warcraft spell art; a few may differ from actual Forever icons. Only implemented talent effects change DPS. Buffs shown are modelling assumptions until verified.</div></section>
 <section class="card priority"><h2>Priority — top checked first</h2><div id="prio"></div><button class="btn" id="addp">Add action</button></section>
 </main><aside>
-<section class="card"><h2>Model status</h2><div class="source"><b>Experimental v0.8:</b> updated with interactive section navigation, an editable example build, illustrative spell icons, and configurable raid-buff assumptions. Windfury ICD remains a test variable. Proc rates, spell coefficients, hit tables, weapon-proc extra-attack resolution and stat conversions are not yet validated against combat logs. DPS and stat weights are comparative sandbox outputs, not verified in-game predictions.</div></section><section class="card"><h2>Simulation</h2><button class="btn primary" id="run" style="width:100%;font-weight:700">▶ Run 5,000 iterations</button><div class="metricrow" style="margin-top:10px"><div class="metric"><b id="dps">—</b><span>mean DPS</span></div><div class="metric"><b id="sd">—</b><span>std dev</span></div><div class="metric"><b id="oom">—</b><span>mana left</span></div><div class="metric"><b id="wfpm">—</b><span>WF procs/min</span></div><div class="metric"><b id="flup">—</b><span>Flurry uptime</span></div></div></section>
+<section class="card"><h2>Model status <span class="badge">v0.9</span></h2><div class="source"><b>Experimental v0.9:</b> event-driven 2H attack simulation and editable raid buffs. The combat model remains provisional and is not yet calibrated to beta combat logs. Windfury ICD remains a test variable. Proc rates, spell coefficients, hit tables, weapon-proc extra-attack resolution and stat conversions are not yet validated against combat logs. DPS and stat weights are comparative sandbox outputs, not verified in-game predictions.</div></section><section class="card"><h2>Simulation</h2><button class="btn primary" id="run" style="width:100%;font-weight:700">▶ Run 5,000 iterations</button><div class="metricrow" style="margin-top:10px"><div class="metric"><b id="dps">—</b><span>mean DPS</span></div><div class="metric"><b id="sd">—</b><span>std dev</span></div><div class="metric"><b id="oom">—</b><span>mana left</span></div><div class="metric"><b id="wfpm">—</b><span>WF procs/min</span></div><div class="metric"><b id="flup">—</b><span>Flurry uptime</span></div></div></section>
 <section class="card"><h2>Damage breakdown</h2><div class="result" id="chart"></div></section>
 <section class="card"><h2>Stat weights <span class="badge">1 AP = 1.000</span></h2><div class="footer">Weights are generated from this exact character, build, rotation and encounter.</div><button class="btn primary" id="weights" style="width:100%;margin:8px 0">⚖ Calculate weights</button><div id="weightout" class="source">Run when your setup is ready.</div></section><section class="card" id="compare-section"><h2>Quick compare</h2><div class="fields" style="grid-template-columns:1fr 1fr"><div class="field"><label>A</label><select id="ca"><option>Windfury</option><option>Flametongue</option><option>Rockbiter</option></select></div><div class="field"><label>B</label><select id="cb"><option>Flametongue</option><option>Windfury</option><option>Rockbiter</option></select></div></div><button class="btn" id="compare" style="width:100%;margin-top:8px">Compare imbues</button><div id="cmp" style="margin-top:8px"></div></section>
-<section class="card" id="evidence-section"><h2>Checks / evidence</h2><div class="source"><span class="ok">✓</span> <b>Confirmed beta 1.60.1:</b> Stormstrike = normal weapon damage, 125 mana, 8s CD; its 12s debuff empowers the next Lightning Bolt, Chain Lightning or Earth Shock by 20%.<br><span class="ok">✓</span> T1 Enhancement 5P = -0.5s Stormstrike cooldown.<br><span class="ok">✓</span> Current Enhancement guide: Flame Shock lasts 12s; Fire Nova radiates from the active Fire Totem; Rage of the Farseer = +30% melee speed for 25s (cast-speed bonus removed Sep 24).<br><span class="warn">≈</span> <b>Modelled:</b> Maelstrom proc chance, several spell coefficients, armor and primary-stat conversions remain provisional. This remains an experimental model; not all talents, procs, spell coefficients or hit mechanics are implemented.<br><span class="warn">?</span> <b>Windfury:</b> working default is <b>no ICD</b>; 1.5s and 3s remain selectable test hypotheses until combat-log/server behavior is nailed down.</div></section>
+<section class="card" id="evidence-section"><h2>Checks / evidence</h2><div class="source"><span class="ok">✓</span> <b>Prior beta reference (requires rechecking against live build):</b> Stormstrike = normal weapon damage, 125 mana, 8s CD; its 12s debuff empowers the next Lightning Bolt, Chain Lightning or Earth Shock by 20%.<br><span class="ok">✓</span> T1 Enhancement 5P = -0.5s Stormstrike cooldown.<br><span class="ok">✓</span> Current Enhancement guide: Flame Shock lasts 12s; Fire Nova radiates from the active Fire Totem; Rage of the Farseer = +30% melee speed for 25s (cast-speed bonus removed Sep 24).<br><span class="warn">≈</span> <b>Modelled:</b> Maelstrom proc chance, several spell coefficients, armor and primary-stat conversions remain provisional. This remains an experimental model; not all talents, procs, spell coefficients or hit mechanics are implemented.<br><span class="warn">?</span> <b>Windfury:</b> working hypothesis is <b>no ICD</b>; 1.5s and 3s remain selectable test hypotheses until combat-log/server behavior is nailed down.</div></section>
 <section class="card"><h2>Event sample</h2><div class="log" id="log">Run the sim to generate a sample combat trace.</div></section>
 </aside></div></div>
 <script>
@@ -144,19 +153,131 @@ loadPreset.onclick=()=>{
 };
 clearTalents.onclick=()=>{for(const k in trees)st[k].fill(0);presetStatus.textContent='Talent points cleared.';renderTal();};
 const actions=['Maintain Lightning Shield','Flame Shock if missing','Stormstrike','Lightning Bolt at Maelstrom threshold','Fire Nova','Frost Shock filler','Wait for swing'];let pr=['Maintain Lightning Shield','Flame Shock if missing','Stormstrike','Lightning Bolt at Maelstrom threshold','Fire Nova','Frost Shock filler'];function renderP(){prio.innerHTML='';pr.forEach((a,i)=>{let r=document.createElement('div');r.className='row';r.innerHTML=`<span class=drag>☷</span><select>${actions.map(x=>`<option ${x==a?'selected':''}>${x}</option>`).join('')}</select><span></span><button class=btn>↑</button><button class=btn>×</button>`;r.children[1].onchange=e=>pr[i]=e.target.value;r.children[3].onclick=()=>{if(i){[pr[i-1],pr[i]]=[pr[i],pr[i-1]];renderP()}};r.children[4].onclick=()=>{pr.splice(i,1);renderP()};prio.append(r)})}addp.onclick=()=>{pr.push('Wait for swing');renderP()};
-function cfg(){let o={};['dur','iters','targets','str','agi','int','mana','ap','crit','hit','haste','wmin','wmax','ws','armor'].forEach(x=>o[x]=+document.getElementById(x).value);o.imbue=imbue.value;o.wficd=+wficd.value;o.mwsp=+mwsp.value;o.sscd=+sscd.value-(+t15.value*.5);o.far=far.checked;
+function cfg(){let o={};['dur','iters','targets','str','agi','int','mana','ap','crit','hit','haste','wmin','wmax','ws','armor','manaRegen','mwChance','bossDodge','glance','glanceDmg','ftDmg','rbAP','spellHit'].forEach(x=>o[x]=+document.getElementById(x).value);o.imbue=imbue.value;o.wficd=+wficd.value;o.mwsp=+mwsp.value;o.sscd=+sscd.value-(+t15.value*.5);o.far=far.checked;
 const bv=(checkbox,value)=>document.getElementById(checkbox).checked?(Number(document.getElementById(value).value)||0):0;
-o.ap+=bv('battleShout','bsValue')+bv('blessingMight','bomValue')+bv('trueshot','tsaValue');
+const bs=bv('battleShout','bsValue'),bom=bv('blessingMight','bomValue');o.ap+=apBuffsStack.checked?bs+bom:Math.max(bs,bom);
 o.str+=bv('markWild','motwValue')+bv('soe','soeValue');
 o.agi+=bv('markWild','motwValue')+bv('goa','goaValue');
 o.int+=bv('markWild','motwValue')+bv('arcaneInt','aiValue');
 for(const [stat,id] of [['ap','weaponAP'],['str','weaponSTR'],['agi','weaponAGI'],['int','weaponINT'],['crit','weaponCrit'],['hit','weaponHit'],['haste','weaponHaste']])o[stat]+=+document.getElementById(id).value||0;
 const king=bv('kings','kingsValue');if(king){o.str*=1+king/100;o.agi*=1+king/100;o.int*=1+king/100;}
 return o}
-function once(c,seed){let rnd=(()=>{let s=seed|0;return()=>((s=Math.imul(1664525,s)+1013904223|0)>>>0)/4294967296})();let t=0,mana=c.mana,dmg={},nextSwing=0,gcd=0,ss=0,fsEnd=0,ls=true,mw=0,wfLast=-99,ssBuffEnd=0,flurry=0,flurryTime=0,wfp=0;let speed=c.ws/(1+c.haste/100);let meleeCrit=(c.crit+talentRank('Thundering Strikes')+c.agi/20)/100;let spellCrit=(c.crit+talentRank('Thundering Strikes')+(c.int*(1+.02*talentRank('Ancestral Knowledge')))/59.2)/100;let hit=Math.min(.99,.91+(c.hit+talentRank('Tidal Focus'))/100);let effectiveInt=c.int*(1+.02*talentRank('Ancestral Knowledge'));let ap=c.ap+c.str*2+(talentRank('Mental Dexterity')?effectiveInt*.33*talentRank('Mental Dexterity'):0);let sp=talentRank('Mental Quickness')?effectiveInt*.15*talentRank('Mental Quickness'):0;let armorMult=1-c.armor/(c.armor+400+85*60);let add=(k,v)=>dmg[k]=(dmg[k]||0)+v;let farEnd=c.far&&talentRank('Rage of the Farseer')?25:0;let sample=[];while(t<c.dur){let haste=(t<farEnd?1.3:1)*(flurry>0?1+.05*talentRank('Flurry'):1);if(t>=nextSwing-1e-6){let wd=(c.wmin+rnd()*(c.wmax-c.wmin)+ap/14*c.ws)*armorMult;if(rnd()<hit){let cr=rnd()<meleeCrit;if(cr){wd*=2;flurry=3}add('White',wd);if(c.imbue==='Windfury'&&rnd()<.20&&t-wfLast>=c.wficd){let wfd=2*(c.wmin+rnd()*(c.wmax-c.wmin)+(ap+333*(1+.133*talentRank('Elemental Weapons')))/14*c.ws)*armorMult;add('Windfury',wfd);wfLast=t;wfp++;if(sample.length<12)sample.push(`${t.toFixed(1)} WF +${wfd.toFixed(0)}`)}else if(c.imbue==='Flametongue')add('Flametongue',35);if(talentRank('Maelstrom Weapon'))mw=Math.min(5,mw+(rnd()<.45?1:0))}if(flurry>0)flurry--;nextSwing=t+speed/haste}
-if(t>=gcd-1e-6){let chosen=null;for(const a of pr){if(a==='Flame Shock if missing'&&t>=fsEnd&&mana>=120){chosen=a;break}if(a==='Stormstrike'&&talentRank('Stormstrike')&&t>=ss&&mana>=125){chosen=a;break}if(a==='Lightning Bolt at Maelstrom threshold'&&talentRank('Maelstrom Weapon')&&mw>=c.mwsp&&mana>=Math.max(0,180*(1-.2*mw*talentRank('Maelstrom Weapon')/5))){chosen=a;break}if(a==='Fire Nova'&&mana>=180&&c.targets>1){chosen=a;break}if(a==='Frost Shock filler'&&mana>=140){chosen=a;break}}
-if(chosen){if(chosen.startsWith('Flame')){mana-=120;add('Flame Shock',(80+6*12)*(1+.05*talentRank('Call of Flame')));fsEnd=t+12}if(chosen==='Stormstrike'){mana-=125;let wd=(c.wmin+c.wmax)/2+ap/14*c.ws;add('Stormstrike',wd*armorMult);ss=t+c.sscd;ssBuffEnd=t+12}if(chosen.startsWith('Lightning')){mana-=Math.max(0,180*(1-.2*mw*talentRank('Maelstrom Weapon')/5));let x=(430+.857*sp)*(1+(talentRank('Concussion')*.01))*(t<ssBuffEnd?1.2:1);ssBuffEnd=0;if(rnd()<spellCrit)x*=2;add('Lightning Bolt',x);mw=Math.max(0,mw-c.mwsp)}if(chosen==='Fire Nova'){mana-=180;add('Fire Nova',(220+.143*sp)*Math.min(c.targets,4)*(1+.1*talentRank('Improved Fire Nova'))*(1+.05*talentRank('Call of Flame')))}if(chosen==='Frost Shock filler'){mana-=140;let x=250+.386*sp;if(rnd()<spellCrit)x*=2;add('Frost Shock',x)}gcd=t+1.5}}
-let nt=Math.min(nextSwing,gcd||999,ss||999,fsEnd||999);t+=.05;if(flurry>0)flurryTime+=.05}let sum=Object.values(dmg).reduce((a,b)=>a+b,0);return{dps:sum/c.dur,dmg,mana,wfp,fl:flurryTime/c.dur,sample}}
+function once(c,seed){
+ // Event-driven 2H Enhancement prototype. The RNG has separate streams for swings, procs and spells.
+ // A single two-handed weapon is assumed; no dual-wield penalty or dual-wield hit model.
+ const rng=(salt)=>{let v=(Math.imul(seed|0,1664525)+salt)|0;return()=>((v=Math.imul(v,1664525)+1013904223|0)>>>0)/4294967296};
+ const meleeRnd=rng(13),procRnd=rng(29),spellRnd=rng(47);
+ const ranks={};for(const k in trees)trees[k].forEach(([name],i)=>{ranks[name]=st[k][i]});
+ const rank=n=>ranks[n]||0, damage={},trace=[];
+ let time=0,mana=c.mana, nextSwing=0,gcd=0,ssReady=0,shockReady=0,novaReady=0,fsExpire=0,fsTick=Infinity,mw=0,mwExpire=0,wfLast=-Infinity,ssDebuff=0,flurry=0,flurryUntil=0,wfCount=0,maelstromProcs=0,bolts=0,flurryUptime=0,swingCount=0;
+ const times=[];const add=(name,value)=>{if(value>0)damage[name]=(damage[name]||0)+value};
+ const critical=Math.min(.9,Math.max(0,(c.crit+rank('Thundering Strikes')+c.agi/20)/100)); // AGI conversion placeholder
+ const spellCrit=Math.min(.9,Math.max(0,(c.crit+rank('Thundering Strikes')+c.int/59.2)/100)); // placeholder
+ const int=c.int*(1+.02*rank('Ancestral Knowledge'));
+ const weaponAP=c.ap+2*c.str+int*(rank('Mental Dexterity')/3);
+ const ap=weaponAP+(c.imbue==='Rockbiter'?c.rbAP*(1+.06667*rank('Elemental Weapons')):0);
+ const sp=int*.15*rank('Mental Quickness');
+ const armorMultiplier=1-Math.max(0,c.armor)/(Math.max(0,c.armor)+400+85*Math.max(1,c.lvl||60));
+ const meleeMiss=Math.max(0,.09-c.hit/100);
+ const bossDodge=Math.max(0,c.bossDodge/100);
+ const shockCost=x=>x*(1-.45*rank('Shamanistic Focus'));
+ let last=0;
+ const remainingMana=()=>Math.max(0,mana);
+ const gainMw=()=>{if(!rank('Maelstrom Weapon'))return;if(procRnd()<c.mwChance/100){mw=Math.min(5,mw+1);mwExpire=time+30;maelstromProcs++}};
+ const spellLand=()=>spellRnd()<Math.max(0,Math.min(1,c.spellHit/100+c.hit/100+rank('Tidal Focus')/100));
+ function meleeHit(kind,bonusAP=0,hasGlance=false){
+  const roll=meleeRnd();let miss=meleeMiss,dodge=bossDodge,glance=hasGlance?c.glance/100:0;
+  if(roll<miss)return {landed:false,crit:false,amount:0};
+  if(roll<miss+dodge)return {landed:false,crit:false,amount:0};
+  // Separate special/white outcome tables, explicit glancing (no crit on glance).
+  let glancing=hasGlance&&roll<miss+dodge+glance;
+  let crit=!glancing&&meleeRnd()<critical;
+  let wd=c.wmin+meleeRnd()*(c.wmax-c.wmin)+(ap+bonusAP)/14*c.ws;
+  let amount=wd*armorMultiplier*(glancing?c.glanceDmg:crit?2:1);
+  add(kind,amount);
+  gainMw();
+  if(crit&&rank('Flurry')){flurry=3;if(trace.length<12)trace.push(time.toFixed(2)+' '+kind+' crit → Flurry')}
+  return {landed:true,crit,amount};
+ }
+ function castAction(action){
+  if(action==='Flame Shock if missing'){
+    const cost=shockCost(120);if(mana<cost||time<shockReady)return false;
+    mana-=cost;shockReady=time+Math.max(1,6-.2*rank('Reverberation'));gcd=time+1.5;
+    if(spellLand()){let x=(80+.214*sp)*(1+.05*rank('Call of Flame'));if(spellRnd()<spellCrit)x*=2;add('Flame Shock',x);fsExpire=time+12;fsTick=time+3}return true;
+  }
+  if(action==='Stormstrike'){
+    if(!rank('Stormstrike')||mana<125||time<ssReady)return false;
+    mana-=125;gcd=time+1.5;ssReady=time+c.sscd;
+    const x=meleeHit('Stormstrike',0,false);if(x.landed)ssDebuff=time+12;
+    return true;
+  }
+  if(action==='Lightning Bolt at Maelstrom threshold'){
+    if(!rank('Maelstrom Weapon')||mw<c.mwsp)return false;
+    const cost=Math.max(0,180*(1-mw*.04*rank('Maelstrom Weapon')));if(mana<cost)return false;
+    mana-=cost;gcd=time+1.5;const empowered=time<ssDebuff;mw=0;mwExpire=0;bolts++;
+    if(spellLand()){
+      let x=(430+.857*sp)*(1+.01*rank('Concussion'))*(empowered?1.2:1);
+      if(spellRnd()<spellCrit)x*=2;add('Lightning Bolt',x);
+      if(empowered)ssDebuff=0;
+    }return true;
+  }
+  if(action==='Fire Nova'){
+    if(c.targets<=1||time<novaReady||mana<180)return false;
+    mana-=180;gcd=time+1.5;novaReady=time+15-2*rank('Improved Fire Nova');
+    let x=(220+.143*sp)*(1+.05*rank('Call of Flame'))*(1+.10*rank('Improved Fire Nova'));
+    // Placeholder: assumes active Fire Totem and four full-damage targets.
+    for(let i=0;i<Math.min(4,c.targets);i++)if(spellLand())add('Fire Nova',x*(spellRnd()<spellCrit?2:1));return true;
+  }
+  if(action==='Frost Shock filler'){
+    const cost=shockCost(140);if(mana<cost||time<shockReady)return false;
+    mana-=cost;gcd=time+1.5;shockReady=time+Math.max(1,6-.2*rank('Reverberation'));
+    if(spellLand()){let x=250+.386*sp;if(spellRnd()<spellCrit)x*=2;add('Frost Shock',x)}return true;
+  }
+  return false;
+ }
+ // Discrete time events: swing / GCD / FS tick / expiration, not fixed 50ms frames.
+ let guard=0;
+ while(time<c.dur-1e-8 && guard++<15000){
+   if(time>=mwExpire&&mwExpire>0){mw=0;mwExpire=0}
+   if(time>=fsTick-1e-7 && time<fsExpire+1e-7){
+      let x=(18+.10*sp)*(1+.05*rank('Call of Flame'));add('Flame Shock DoT',x);fsTick+=3;
+      if(fsTick>fsExpire+1e-7)fsTick=Infinity;
+   }
+   if(time>=nextSwing-1e-7){
+      const active=flurry>0;
+      const white=meleeHit('White',0,true);swingCount++;
+      // Consume a Flurry charge only if it was already active before this swing.
+      if(active&&!white.crit&&flurry>0)flurry=Math.max(0,flurry-1);
+      if(white.landed){
+        if(c.imbue==='Windfury'&&procRnd()<.20&&time-wfLast>=c.wficd){
+          wfLast=time;wfCount++;
+          const wfAP=333*(1+.13333*rank('Elemental Weapons'));
+          meleeHit('Windfury',wfAP,false);meleeHit('Windfury',wfAP,false);
+          if(trace.length<12)trace.push(time.toFixed(2)+' Windfury → 2 extra attack rolls');
+        }else if(c.imbue==='Flametongue'&&spellLand())add('Flametongue',c.ftDmg*(1+.05*rank('Elemental Weapons')));
+      }
+      const far=(c.far&&rank('Rage of the Farseer')&&time<25)?1.3:1;
+      const hasteFactor=(1+Math.max(-90,c.haste)/100)*far*(flurry>0?1+.05*rank('Flurry'):1);
+      const interval=c.ws/Math.max(.1,hasteFactor);
+      if(flurry>0)flurryUptime+=interval;
+      nextSwing=time+Math.max(.5,interval);
+   }
+   if(time>=gcd-1e-7){
+     for(const action of pr){
+       if(action==='Flame Shock if missing'&&time<fsExpire-0.5)continue;
+       if(action==='Lightning Bolt at Maelstrom threshold'&&mw<c.mwsp)continue;
+       if(castAction(action))break;
+     }
+     if(gcd<=time+1e-7)gcd=time+.15; // Idle polling only when no usable action.
+   }
+   let next=Math.min(nextSwing,gcd,fsTick,c.dur);
+   if(next<=time+1e-7)next=time+.05;
+   mana=Math.min(c.mana,mana+Math.max(0,c.manaRegen)*(next-time));
+   time=next;
+ }
+ const sum=Object.values(damage).reduce((a,b)=>a+b,0);
+ return {dps:sum/c.dur,dmg:damage,mana:remainingMana(),wfp:wfCount,fl:Math.min(1,flurryUptime/c.dur),sample:trace,extra:{swingCount,maelstromProcs,bolts,guard}};
+}
 function simulate(over={}){let c={...cfg(),...over},n=Math.min(c.iters,10000),sum=0,sum2=0,bd={},ma=0,w=0,f=0,last;for(let i=1;i<=n;i++){let r=once(c,i*7919);last=r;sum+=r.dps;sum2+=r.dps*r.dps;ma+=r.mana;w+=r.wfp;f+=r.fl;for(const k in r.dmg)bd[k]=(bd[k]||0)+r.dmg[k]/c.dur}let mean=sum/n;return{mean,sd:Math.sqrt(Math.max(0,sum2/n-mean*mean)),bd:Object.fromEntries(Object.entries(bd).map(([k,v])=>[k,v/n])),mana:ma/n,wfpm:w/n*60/c.dur,fl:f/n,last}}
 function show(r){dps.textContent=r.mean.toFixed(1);sd.textContent=r.sd.toFixed(1);oom.textContent=Math.max(0,r.mana).toFixed(0);wfpm.textContent=r.wfpm.toFixed(2);flup.textContent=(r.fl*100).toFixed(0)+'%';let arr=Object.entries(r.bd).sort((a,b)=>b[1]-a[1]),mx=Math.max(...arr.map(x=>x[1]),1);chart.innerHTML=arr.map(([k,v])=>`<div class=bar style="height:${Math.max(5,v/mx*145)}px"><i>${v.toFixed(0)}</i><span>${k}</span></div>`).join('');log.innerHTML=r.last.sample.join('<br>')||'No sampled proc events.'}
 run.onclick=()=>{run.textContent='Running…';setTimeout(()=>{let r=simulate();show(r);run.textContent=`▶ Run ${(+iters.value).toLocaleString()} iterations`},20)};iters.onchange=()=>run.textContent=`▶ Run ${(+iters.value).toLocaleString()} iterations`;compare.onclick=()=>{let a=simulate({imbue:ca.value,iters:1500}),b=simulate({imbue:cb.value,iters:1500}),delta=(b.mean/a.mean-1)*100;cmp.innerHTML=`<b>${ca.value}</b> ${a.mean.toFixed(1)} DPS<br><b>${cb.value}</b> ${b.mean.toFixed(1)} DPS<br><span class=${delta>0?'ok':'warn'}>${delta>=0?'+':''}${delta.toFixed(2)}%</span>`};function calcWeights(){
@@ -168,11 +289,9 @@ run.onclick=()=>{run.textContent='Running…';setTimeout(()=>{let r=simulate();s
    let per=k==='ap'?apPer:slope(k,d),wt=apPer>0?per/apPer:NaN;
    rows.push([k.toUpperCase(),wt,per]);
  }
- weightout.innerHTML='<table style="width:100%">'+rows.map(x=>`<tr><td>${x[0]}</td><td style="text-align:right"><b>${x[0]=='AP'?'1.000':Number.isFinite(x[1])?x[1].toFixed(3):'n/a'}</b></td><td style="text-align:right;color:var(--mut)">${x[2].toFixed(3)} DPS/stat</td></tr>`).join('')+'</table><div class="footer">Central finite differences, '+n.toLocaleString()+' runs per setting. WARNING: the combat model and some stat conversions are provisional; near-zero or negative weights may still be simulation noise or a model bug. Do not treat these as BiS weights yet.</div>';
+ weightout.innerHTML='<table style="width:100%">'+rows.map(x=>`<tr><td>${x[0]}</td><td style="text-align:right"><b>${x[0]=='AP'?'1.000':Number.isFinite(x[1])?x[1].toFixed(3):'n/a'}</b></td><td style="text-align:right;color:var(--mut)">${x[2].toFixed(3)} DPS/stat</td></tr>`).join('')+'</table><div class="footer">Paired-seed central finite differences, '+n.toLocaleString()+' runs per setting. WARNING: the combat model and some stat conversions are provisional; near-zero or negative weights may still be simulation noise or a model bug. Do not treat these as BiS weights yet.</div>';
 }
 weights.onclick=()=>{weights.textContent='Calculating…';setTimeout(()=>{calcWeights();weights.textContent='⚖ Calculate weights'},20)};
-// Working section navigation instead of decorative inactive tabs.
-for(const tab of document.querySelectorAll('.tabs .tab'))tab.addEventListener('click',()=>{document.querySelectorAll('.tabs .tab').forEach(x=>x.classList.remove('active'));tab.classList.add('active');document.getElementById(tab.dataset.jump).scrollIntoView({behavior:'smooth',block:'start'});});
 for(const check of document.querySelectorAll('.buff input[type=checkbox]'))check.addEventListener('change',()=>{const selected=[...document.querySelectorAll('.buff input[type=checkbox]:checked')].map(x=>x.parentElement.textContent.trim());buffSummary.textContent=selected.length?'Active buffs: '+selected.join(', '):'No raid buffs selected.';});
 const weaponFields=['weaponName','weaponType','weaponAP','weaponSTR','weaponAGI','weaponINT','weaponCrit','weaponHit','weaponHaste','wmin','wmax','ws'];
 weaponPreset.onchange=()=>{
