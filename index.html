@@ -1,0 +1,127 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Forever Shaman Lab</title>
+<style>
+:root{--bg:#0c0b14;--panel:#171322;--panel2:#201a2d;--line:#352c48;--txt:#eeeaf6;--mut:#9b93aa;--pur:#a982ff;--gold:#f0c86a;--green:#62d394;--red:#ff6b7d;--blue:#66b8ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -20%,#2a1841 0,#0c0b14 40%);color:var(--txt);font:13px Inter,Segoe UI,Arial,sans-serif}.app{max-width:1450px;margin:auto;padding:18px}.head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.head h1{font-size:20px;margin:0 auto 0 0}.badge{padding:5px 8px;border:1px solid var(--line);border-radius:6px;color:var(--mut)}.tabs{display:flex;gap:6px;margin-bottom:12px}.tab,.btn,select,input{background:#211a2d;color:var(--txt);border:1px solid #403452;border-radius:6px;padding:7px 9px}.tab.active,.btn.primary{border-color:#8e6ed0;background:#35264e}.btn{cursor:pointer}.btn:hover{border-color:#755d96}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.card{background:rgba(23,19,34,.96);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:12px}.card h2{font-size:13px;margin:0 0 10px;color:#d9ccec}.fields{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.field label{display:block;color:var(--mut);font-size:11px;margin-bottom:4px}.field input,.field select{width:100%}.checks{display:flex;flex-wrap:wrap;gap:7px}.check{padding:6px 8px;background:#201a2b;border:1px solid #352d44;border-radius:5px}.metricrow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.metric{background:#100e18;border:1px solid #30283f;padding:10px;border-radius:7px}.metric b{display:block;font-size:20px;color:#fff}.metric span{font-size:10px;color:var(--mut)}.talents{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.tree{background:#100e18;border:1px solid #30283f;border-radius:7px;padding:8px}.tree h3{font-size:12px;margin:0 0 7px}.tg{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:58px;gap:4px}.tal{font-size:9px;line-height:1.05;padding:5px;background:#181321;border:1px solid #332a42;border-radius:5px;cursor:pointer;position:relative;overflow:hidden}.tal.on{border-color:var(--gold);box-shadow:inset 0 0 0 1px #8d6c2b}.tal.lock{opacity:.25}.rank{position:absolute;right:3px;bottom:2px;background:#050407;padding:1px 3px;border-radius:3px}.priority .row{display:grid;grid-template-columns:28px 1fr 115px 30px 30px;gap:5px;align-items:center;margin:5px 0}.priority .row select{padding:5px}.drag{color:var(--mut);text-align:center}.result{height:180px;display:flex;align-items:flex-end;gap:5px;border-bottom:1px solid #453958;padding:10px 4px 0}.bar{flex:1;min-width:20px;background:linear-gradient(#b287ff,#5b3c91);position:relative;border-radius:3px 3px 0 0}.bar span{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--mut);white-space:nowrap}.bar i{position:absolute;top:-17px;width:100%;text-align:center;font-style:normal;font-size:9px}.log{max-height:180px;overflow:auto;background:#0d0b13;border:1px solid #2e263b;border-radius:6px;padding:8px;font-family:Consolas,monospace;font-size:10px;color:#bdb5c9}.warn{color:#f2b55d}.ok{color:var(--green)}.source{font-size:10px;color:var(--mut);line-height:1.4}.footer{color:var(--mut);font-size:10px;margin-top:8px}@media(max-width:950px){.grid{grid-template-columns:1fr}.fields{grid-template-columns:repeat(2,1fr)}.metricrow{grid-template-columns:repeat(2,1fr)}}
+</style></head><body><div class="app">
+<div class="head"><h1>⚡ Forever Shaman Lab <small style="color:#8f849d">Enhancement simulator prototype</small></h1><span class="badge">v0.7 · Sep 24 update</span><span class="badge" id="evidence">Evidence: experimental</span></div>
+<div class="tabs"><button class="tab active">SIMULATE</button><button class="tab">BUILD</button><button class="tab">COMPARE</button><button class="tab">EVIDENCE</button></div>
+<div class="grid"><main>
+<section class="card"><h2>Character & encounter</h2><div class="fields">
+<div class="field"><label>Level</label><input id="lvl" type="number" value="60" min="20" max="60"></div><div class="field"><label>Fight length, sec</label><input id="dur" type="number" value="120"></div><div class="field"><label>Iterations</label><input id="iters" type="number" value="5000" step="500"></div><div class="field"><label>Targets</label><input id="targets" type="number" value="1" min="1" max="10"></div>
+<div class="field"><label>Strength</label><input id="str" type="number" value="150"></div><div class="field"><label>Agility</label><input id="agi" type="number" value="100"></div><div class="field"><label>Intellect</label><input id="int" type="number" value="120"></div><div class="field"><label>Mana</label><input id="mana" type="number" value="3500"></div>
+<div class="field"><label>Attack power</label><input id="ap" type="number" value="700"></div><div class="field"><label>Crit %</label><input id="crit" type="number" value="12" step=".1"></div><div class="field"><label>Hit %</label><input id="hit" type="number" value="5" step=".1"></div><div class="field"><label>Haste %</label><input id="haste" type="number" value="0" step=".1"></div>
+<div class="field"><label>Weapon min</label><input id="wmin" type="number" value="150"></div><div class="field"><label>Weapon max</label><input id="wmax" type="number" value="280"></div><div class="field"><label>Weapon speed</label><input id="ws" type="number" value="3.6" step=".1"></div><div class="field"><label>Boss armor</label><input id="armor" type="number" value="3731"></div>
+</div></section>
+<section class="card"><h2>Weapons <span class="badge">New · v0.7</span></h2>
+<div class="footer">Custom weapon slots, no invented item stats. Choose a test preset or enter the exact stats from your beta weapon. The selected weapon feeds the combat simulation and stat weights.</div>
+<div class="fields">
+<div class="field"><label>Weapon preset</label><select id="weaponPreset"><option value="custom">Custom / current inputs</option><option value="slow">Hypothetical slow 2H (test only)</option><option value="fast">Hypothetical fast 2H (test only)</option></select></div>
+<div class="field"><label>Weapon name</label><input id="weaponName" value="My two-handed weapon" placeholder="Item name"></div>
+<div class="field"><label>Weapon type</label><select id="weaponType"><option>Two-hand mace</option><option>Two-hand axe</option><option>Two-hand staff</option><option>One-hand mace</option><option>One-hand axe</option></select></div>
+<div class="field"><label>Weapon bonus AP</label><input id="weaponAP" type="number" value="0"></div>
+<div class="field"><label>Weapon bonus Strength</label><input id="weaponSTR" type="number" value="0"></div>
+<div class="field"><label>Weapon bonus Agility</label><input id="weaponAGI" type="number" value="0"></div>
+<div class="field"><label>Weapon bonus Intellect</label><input id="weaponINT" type="number" value="0"></div>
+<div class="field"><label>Weapon bonus Crit %</label><input id="weaponCrit" type="number" value="0" step=".1"></div>
+<div class="field"><label>Weapon bonus Hit %</label><input id="weaponHit" type="number" value="0" step=".1"></div>
+<div class="field"><label>Weapon bonus Haste %</label><input id="weaponHaste" type="number" value="0" step=".1"></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn" id="saveWeapon">Save weapon locally</button><button class="btn" id="loadWeapon">Load saved weapon</button><button class="btn" id="resetWeapon">Clear weapon bonuses</button></div>
+<div class="footer" id="weaponStatus">Weapon damage and speed are edited in Character &amp; encounter above.</div>
+</section><section class="card"><h2>Self buffs / assumptions</h2><div class="fields"><div class="field"><label>Weapon imbue</label><select id="imbue"><option>Windfury</option><option>Flametongue</option><option>Rockbiter</option></select></div><div class="field"><label>Windfury ICD</label><select id="wficd"><option value="0" selected>No ICD (working default)</option><option value="1.5">1.5 sec — test</option><option value="3">3 sec — legacy test</option></select></div><div class="field"><label>Maelstrom spender</label><select id="mwsp"><option value="5">5 stacks (instant LB)</option></select></div><div class="field"><label>Stormstrike CD</label><input id="sscd" type="number" value="8" min="6" max="10" step=".5"></div><div class="field"><label>Tier 1 5P</label><select id="t15"><option value="0">Off</option><option value="1">On (-0.5s SS)</option></select></div><div class="field"><label>Policy</label><select id="policy"><option>Strict-ish</option><option>Experimental</option></select></div></div><div class="checks" style="margin-top:9px"><label class="check"><input id="wfTot" type="checkbox" checked> Windfury Totem</label><label class="check"><input id="ftTot" type="checkbox"> Flametongue Totem</label><label class="check"><input id="soe" type="checkbox" checked> Strength of Earth</label><label class="check"><input id="goa" type="checkbox" checked> Grace of Air</label><label class="check"><input id="far" type="checkbox" checked> Rage of the Farseer</label></div></section>
+<section class="card"><h2>Build editor <span id="pts" style="color:var(--gold)"></span></h2><div class="talents" id="talents"></div><div class="footer">Left click adds, right click removes. The three trees follow the supplied talent list. September 24 patch: Elemental Alacrity moved to 10-point tier, Elemental Fury to 25-point tier. Exact column positions/prerequisite arrows still need live beta confirmation; this is a tier-accurate list, not a pixel-exact tree. Only implemented talent effects change DPS.</div></section>
+<section class="card priority"><h2>Priority — top checked first</h2><div id="prio"></div><button class="btn" id="addp">Add action</button></section>
+</main><aside>
+<section class="card"><h2>Model status</h2><div class="source"><b>Experimental v0.7:</b> updated for September 24 talent changes. Windfury ICD remains a test variable. Proc rates, spell coefficients, hit tables, weapon-proc extra-attack resolution and stat conversions are not yet validated against combat logs. DPS and stat weights are comparative sandbox outputs, not verified in-game predictions.</div></section><section class="card"><h2>Simulation</h2><button class="btn primary" id="run" style="width:100%;font-weight:700">▶ Run 5,000 iterations</button><div class="metricrow" style="margin-top:10px"><div class="metric"><b id="dps">—</b><span>mean DPS</span></div><div class="metric"><b id="sd">—</b><span>std dev</span></div><div class="metric"><b id="oom">—</b><span>mana left</span></div><div class="metric"><b id="wfpm">—</b><span>WF procs/min</span></div><div class="metric"><b id="flup">—</b><span>Flurry uptime</span></div></div></section>
+<section class="card"><h2>Damage breakdown</h2><div class="result" id="chart"></div></section>
+<section class="card"><h2>Stat weights <span class="badge">1 AP = 1.000</span></h2><div class="footer">Weights are generated from this exact character, build, rotation and encounter.</div><button class="btn primary" id="weights" style="width:100%;margin:8px 0">⚖ Calculate weights</button><div id="weightout" class="source">Run when your setup is ready.</div></section><section class="card"><h2>Quick compare</h2><div class="fields" style="grid-template-columns:1fr 1fr"><div class="field"><label>A</label><select id="ca"><option>Windfury</option><option>Flametongue</option><option>Rockbiter</option></select></div><div class="field"><label>B</label><select id="cb"><option>Flametongue</option><option>Windfury</option><option>Rockbiter</option></select></div></div><button class="btn" id="compare" style="width:100%;margin-top:8px">Compare imbues</button><div id="cmp" style="margin-top:8px"></div></section>
+<section class="card"><h2>Checks / evidence</h2><div class="source"><span class="ok">✓</span> <b>Confirmed beta 1.60.1:</b> Stormstrike = normal weapon damage, 125 mana, 8s CD; its 12s debuff empowers the next Lightning Bolt, Chain Lightning or Earth Shock by 20%.<br><span class="ok">✓</span> T1 Enhancement 5P = -0.5s Stormstrike cooldown.<br><span class="ok">✓</span> Current Enhancement guide: Flame Shock lasts 12s; Fire Nova radiates from the active Fire Totem; Rage of the Farseer = +30% melee speed for 25s (cast-speed bonus removed Sep 24).<br><span class="warn">≈</span> <b>Modelled:</b> Maelstrom proc chance, several spell coefficients, armor and primary-stat conversions remain provisional. This remains an experimental model; not all talents, procs, spell coefficients or hit mechanics are implemented.<br><span class="warn">?</span> <b>Windfury:</b> working default is <b>no ICD</b>; 1.5s and 3s remain selectable test hypotheses until combat-log/server behavior is nailed down.</div></section>
+<section class="card"><h2>Event sample</h2><div class="log" id="log">Run the sim to generate a sample combat trace.</div></section>
+</aside></div></div>
+<script>
+const trees={
+Elemental:[
+['Convection',5,0],['Concussion',5,0],
+['Elemental Warding',3,5],['Reverberation',5,5],['Call of Flame',3,5],['Elemental Devastation',3,5],
+['Elemental Focus',1,10],['Elemental Alacrity',3,10],
+['Improved Fire Nova',2,15],['Eye of the Storm',3,15],['Call of Thunder',1,15],
+['Elemental Reach',2,20],['Lightning Overload',3,20],['Earthbound',1,20],
+['Elemental Fury',5,25],['Lava Burst',1,30]
+],
+Enhancement:[
+["Earth's Grasp",2,0],['Thundering Strikes',5,0],['Ancestral Knowledge',5,0],
+['Guardian Totems',2,5],['Mental Dexterity',3,5],['Improved Ghost Wolf',2,5],['Improved Lightning Shield',3,5],
+['Elemental Weapons',3,10],['Shamanistic Focus',1,10],['Anticipation',3,10],
+['Toughness',5,15],['Flurry',5,15],['Stormstrike',1,15],
+['Spirit Weapons',1,20],['Mental Quickness',2,20],['Improved Stormstrike',2,20],
+['Maelstrom Weapon',5,25],['Rage of the Farseer',1,30]
+],
+Restoration:[
+['Improved Healing Wave',5,0],['Totemic Focus',5,0],
+['Mindfulness',3,5],['Natural Grace',3,5],['Tidal Focus',5,5],['Improved Reincarnation',2,5],
+['Ancestral Healing',3,10],['Healing Focus',3,10],['Water Shield',1,10],
+['Tidal Mastery',5,15],['Restorative Totems',5,15],['Mana Tide Totem',1,15],
+['Healing Way',3,20],["Nature's Swiftness",1,20],
+['Purification',5,25],['Riptide',1,30]
+]};
+let st={};for(const k in trees)st[k]=Array(trees[k].length).fill(0);function ts(k){return st[k].reduce((a,b)=>a+b,0)}function total(){return Object.values(st).flat().reduce((a,b)=>a+b,0)}function maxpts(){return Math.max(0,Math.min(51,+lvl.value-9))}function talentRank(name){for(const k in trees){let i=trees[k].findIndex(x=>x[0]===name);if(i>=0)return st[k][i]}return 0}
+function renderTal(){
+ talents.innerHTML='';
+ for(const k in trees){
+   let d=document.createElement('div');d.className='tree';d.innerHTML=`<h3>${k} <span style="color:var(--mut)">${ts(k)} pts</span></h3>`;
+   let g=document.createElement('div');g.className='tg';
+   let currentReq=-1;
+   trees[k].forEach((x,i)=>{
+     let [name,max,req]=x;
+     if(req!==currentReq){
+       currentReq=req;
+       let sep=document.createElement('div');
+       sep.style='grid-column:1/-1;color:var(--mut);font-size:9px;border-top:1px solid #30283f;padding-top:3px';
+       sep.textContent=req?`${req} points required`:'Tier 1';
+       g.append(sep);
+     }
+     let e=document.createElement('div');
+     let unlocked=ts(k)>=req || st[k][i]>0;
+     e.className='tal '+(st[k][i]?'on ':'')+(unlocked?'':'lock');
+     e.innerHTML=`${name}<span class=rank>${st[k][i]}/${max}</span>`;
+     e.title=`${name} — ${max} rank${max>1?'s':''}; ${req} points required`;
+     e.onclick=()=>{if(total()<maxpts()&&st[k][i]<max&&ts(k)>=req){st[k][i]++;renderTal()}};
+     e.oncontextmenu=ev=>{ev.preventDefault();if(st[k][i]){st[k][i]--;renderTal()}};
+     g.append(e)
+   });
+   d.append(g);talents.append(d)
+ }
+ pts.textContent=`${total()} / ${maxpts()} points`
+}
+const actions=['Maintain Lightning Shield','Flame Shock if missing','Stormstrike','Lightning Bolt at Maelstrom threshold','Fire Nova','Frost Shock filler','Wait for swing'];let pr=['Maintain Lightning Shield','Flame Shock if missing','Stormstrike','Lightning Bolt at Maelstrom threshold','Fire Nova','Frost Shock filler'];function renderP(){prio.innerHTML='';pr.forEach((a,i)=>{let r=document.createElement('div');r.className='row';r.innerHTML=`<span class=drag>☷</span><select>${actions.map(x=>`<option ${x==a?'selected':''}>${x}</option>`).join('')}</select><span></span><button class=btn>↑</button><button class=btn>×</button>`;r.children[1].onchange=e=>pr[i]=e.target.value;r.children[3].onclick=()=>{if(i){[pr[i-1],pr[i]]=[pr[i],pr[i-1]];renderP()}};r.children[4].onclick=()=>{pr.splice(i,1);renderP()};prio.append(r)})}addp.onclick=()=>{pr.push('Wait for swing');renderP()};
+function cfg(){let o={};['dur','iters','targets','str','agi','int','mana','ap','crit','hit','haste','wmin','wmax','ws','armor'].forEach(x=>o[x]=+document.getElementById(x).value);o.imbue=imbue.value;o.wficd=+wficd.value;o.mwsp=+mwsp.value;o.sscd=+sscd.value-(+t15.value*.5);o.far=far.checked;
+for(const [stat,id] of [['ap','weaponAP'],['str','weaponSTR'],['agi','weaponAGI'],['int','weaponINT'],['crit','weaponCrit'],['hit','weaponHit'],['haste','weaponHaste']])o[stat]+=+document.getElementById(id).value||0;
+return o}
+function once(c,seed){let rnd=(()=>{let s=seed|0;return()=>((s=Math.imul(1664525,s)+1013904223|0)>>>0)/4294967296})();let t=0,mana=c.mana,dmg={},nextSwing=0,gcd=0,ss=0,fsEnd=0,ls=true,mw=0,wfLast=-99,ssBuffEnd=0,flurry=0,flurryTime=0,wfp=0;let speed=c.ws/(1+c.haste/100);let meleeCrit=(c.crit+talentRank('Thundering Strikes')+c.agi/20)/100;let spellCrit=(c.crit+talentRank('Thundering Strikes')+c.int/59.2)/100;let hit=Math.min(.99,.91+(c.hit+talentRank('Tidal Focus'))/100);let ap=c.ap+c.str*2+(talentRank('Mental Dexterity')?c.int*.33*talentRank('Mental Dexterity'):0);let sp=talentRank('Mental Quickness')?c.int*.15*talentRank('Mental Quickness'):0;let armorMult=1-c.armor/(c.armor+400+85*60);let add=(k,v)=>dmg[k]=(dmg[k]||0)+v;let farEnd=c.far&&talentRank('Rage of the Farseer')?25:0;let sample=[];while(t<c.dur){let haste=(t<farEnd?1.3:1)*(flurry>0?1+.05*talentRank('Flurry'):1);if(t>=nextSwing-1e-6){let wd=(c.wmin+rnd()*(c.wmax-c.wmin)+ap/14*c.ws)*armorMult;if(rnd()<hit){let cr=rnd()<meleeCrit;if(cr){wd*=2;flurry=3}add('White',wd);if(c.imbue==='Windfury'&&rnd()<.20&&t-wfLast>=c.wficd){let wfd=2*(c.wmin+rnd()*(c.wmax-c.wmin)+(ap+333*(1+.133*talentRank('Elemental Weapons')))/14*c.ws)*armorMult;add('Windfury',wfd);wfLast=t;wfp++;if(sample.length<12)sample.push(`${t.toFixed(1)} WF +${wfd.toFixed(0)}`)}else if(c.imbue==='Flametongue')add('Flametongue',35);if(talentRank('Maelstrom Weapon'))mw=Math.min(5,mw+(rnd()<.45?1:0))}if(flurry>0)flurry--;nextSwing=t+speed/haste}
+if(t>=gcd-1e-6){let chosen=null;for(const a of pr){if(a==='Flame Shock if missing'&&t>=fsEnd&&mana>=120){chosen=a;break}if(a==='Stormstrike'&&talentRank('Stormstrike')&&t>=ss&&mana>=125){chosen=a;break}if(a==='Lightning Bolt at Maelstrom threshold'&&talentRank('Maelstrom Weapon')&&mw>=c.mwsp&&mana>=Math.max(0,180*(1-.2*mw*talentRank('Maelstrom Weapon')/5))){chosen=a;break}if(a==='Fire Nova'&&mana>=180&&c.targets>1){chosen=a;break}if(a==='Frost Shock filler'&&mana>=140){chosen=a;break}}
+if(chosen){if(chosen.startsWith('Flame')){mana-=120;add('Flame Shock',(80+6*12)*(1+.05*talentRank('Call of Flame')));fsEnd=t+12}if(chosen==='Stormstrike'){mana-=125;let wd=(c.wmin+c.wmax)/2+ap/14*c.ws;add('Stormstrike',wd*armorMult);ss=t+c.sscd;ssBuffEnd=t+12}if(chosen.startsWith('Lightning')){mana-=Math.max(0,180*(1-.2*mw*talentRank('Maelstrom Weapon')/5));let x=(430+.857*sp)*(1+(talentRank('Concussion')*.01))*(t<ssBuffEnd?1.2:1);ssBuffEnd=0;if(rnd()<spellCrit)x*=2;add('Lightning Bolt',x);mw=Math.max(0,mw-c.mwsp)}if(chosen==='Fire Nova'){mana-=180;add('Fire Nova',(220+.143*sp)*Math.min(c.targets,4)*(1+.1*talentRank('Improved Fire Nova'))*(1+.05*talentRank('Call of Flame')))}if(chosen==='Frost Shock filler'){mana-=140;let x=250+.386*sp;if(rnd()<spellCrit)x*=2;add('Frost Shock',x)}gcd=t+1.5}}
+let nt=Math.min(nextSwing,gcd||999,ss||999,fsEnd||999);t+=.05;if(flurry>0)flurryTime+=.05}let sum=Object.values(dmg).reduce((a,b)=>a+b,0);return{dps:sum/c.dur,dmg,mana,wfp,fl:flurryTime/c.dur,sample}}
+function simulate(over={}){let c={...cfg(),...over},n=Math.min(c.iters,10000),sum=0,sum2=0,bd={},ma=0,w=0,f=0,last;for(let i=1;i<=n;i++){let r=once(c,i*7919);last=r;sum+=r.dps;sum2+=r.dps*r.dps;ma+=r.mana;w+=r.wfp;f+=r.fl;for(const k in r.dmg)bd[k]=(bd[k]||0)+r.dmg[k]/c.dur}let mean=sum/n;return{mean,sd:Math.sqrt(Math.max(0,sum2/n-mean*mean)),bd:Object.fromEntries(Object.entries(bd).map(([k,v])=>[k,v/n])),mana:ma/n,wfpm:w/n*60/c.dur,fl:f/n,last}}
+function show(r){dps.textContent=r.mean.toFixed(1);sd.textContent=r.sd.toFixed(1);oom.textContent=Math.max(0,r.mana).toFixed(0);wfpm.textContent=r.wfpm.toFixed(2);flup.textContent=(r.fl*100).toFixed(0)+'%';let arr=Object.entries(r.bd).sort((a,b)=>b[1]-a[1]),mx=Math.max(...arr.map(x=>x[1]),1);chart.innerHTML=arr.map(([k,v])=>`<div class=bar style="height:${Math.max(5,v/mx*145)}px"><i>${v.toFixed(0)}</i><span>${k}</span></div>`).join('');log.innerHTML=r.last.sample.join('<br>')||'No sampled proc events.'}
+run.onclick=()=>{run.textContent='Running…';setTimeout(()=>{let r=simulate();show(r);run.textContent=`▶ Run ${(+iters.value).toLocaleString()} iterations`},20)};iters.onchange=()=>run.textContent=`▶ Run ${(+iters.value).toLocaleString()} iterations`;compare.onclick=()=>{let a=simulate({imbue:ca.value,iters:1500}),b=simulate({imbue:cb.value,iters:1500}),delta=(b.mean/a.mean-1)*100;cmp.innerHTML=`<b>${ca.value}</b> ${a.mean.toFixed(1)} DPS<br><b>${cb.value}</b> ${b.mean.toFixed(1)} DPS<br><span class=${delta>0?'ok':'warn'}>${delta>=0?'+':''}${delta.toFixed(2)}%</span>`};function calcWeights(){
+ let base=cfg(),n=Math.min(10000,Math.max(4000,base.iters)),ds={ap:100,str:25,agi:25,int:25,crit:3,hit:2,haste:5};
+ let rows=[],b=simulate({...base,iters:n});
+ function slope(k,d){let hi={...base,iters:n},lo={...base,iters:n};hi[k]+=d;lo[k]-=d;if(k==='hit')lo[k]=Math.max(0,lo[k]);if(k==='haste')lo[k]=Math.max(0,lo[k]);let r1=simulate(hi),r0=simulate(lo);return (r1.mean-r0.mean)/(hi[k]-lo[k]);}
+ let apPer=slope('ap',ds.ap);
+ for(const [k,d] of Object.entries(ds)){
+   let per=k==='ap'?apPer:slope(k,d),wt=apPer>0?per/apPer:NaN;
+   rows.push([k.toUpperCase(),wt,per]);
+ }
+ weightout.innerHTML='<table style="width:100%">'+rows.map(x=>`<tr><td>${x[0]}</td><td style="text-align:right"><b>${x[0]=='AP'?'1.000':Number.isFinite(x[1])?x[1].toFixed(3):'n/a'}</b></td><td style="text-align:right;color:var(--mut)">${x[2].toFixed(3)} DPS/stat</td></tr>`).join('')+'</table><div class="footer">Central finite differences, '+n.toLocaleString()+' runs per setting. WARNING: the combat model and some stat conversions are provisional; near-zero or negative weights may still be simulation noise or a model bug. Do not treat these as BiS weights yet.</div>';
+}
+weights.onclick=()=>{weights.textContent='Calculating…';setTimeout(()=>{calcWeights();weights.textContent='⚖ Calculate weights'},20)};
+const weaponFields=['weaponName','weaponType','weaponAP','weaponSTR','weaponAGI','weaponINT','weaponCrit','weaponHit','weaponHaste','wmin','wmax','ws'];
+weaponPreset.onchange=()=>{
+ if(weaponPreset.value==='slow'){weaponName.value='Test: slow two-hander';wmin.value=170;wmax.value=310;ws.value=3.8;}
+ if(weaponPreset.value==='fast'){weaponName.value='Test: fast two-hander';wmin.value=125;wmax.value=225;ws.value=2.8;}
+ weaponStatus.textContent='Hypothetical test weapon; values are not sourced from Forever item data.';
+};
+saveWeapon.onclick=()=>{try{localStorage.setItem('forever_shaman_weapon_v06',JSON.stringify(Object.fromEntries(weaponFields.map(id=>[id,document.getElementById(id).value]))));weaponStatus.textContent='Weapon saved in this browser.'}catch(e){weaponStatus.textContent='Browser storage unavailable; use the current fields.'}};
+loadWeapon.onclick=()=>{try{let o=JSON.parse(localStorage.getItem('forever_shaman_weapon_v06')||'null');if(!o){weaponStatus.textContent='No saved weapon in this browser.';return;}for(const [id,v] of Object.entries(o))document.getElementById(id).value=v;weaponPreset.value='custom';weaponStatus.textContent='Saved weapon loaded.'}catch(e){weaponStatus.textContent='Could not load saved weapon.'}};
+resetWeapon.onclick=()=>{for(const id of ['weaponAP','weaponSTR','weaponAGI','weaponINT','weaponCrit','weaponHit','weaponHaste'])document.getElementById(id).value=0;weaponPreset.value='custom';weaponStatus.textContent='Weapon bonus stats cleared.'};
+lvl.onchange=renderTal;renderTal();renderP();
+</script></body></html>
