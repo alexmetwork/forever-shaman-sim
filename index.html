@@ -17,7 +17,7 @@ html{scroll-behavior:smooth}.tabs .tab{cursor:pointer}.tabs .tab:focus-visible,.
 
 .class-switch{display:flex;gap:8px;margin:0 0 12px}.class-tab{font:inherit;color:#ddd0ef;background:#221930;border:1px solid #443357;border-radius:9px;padding:12px 20px;cursor:pointer;font-weight:bold}.class-tab.selected{background:#54357d;border-color:#a481f0;color:white}#shamanApp[hidden],#mageApp[hidden]{display:none!important}.mage-results{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mage-intro p{margin:0;color:#c1b8d0}.mage-output{margin-top:12px}.cap-note{color:#e9cb80;font-size:10px;display:block;margin-top:4px}@media(max-width:800px){.mage-results{grid-template-columns:1fr}.class-switch{flex-wrap:wrap}}
 </style></head><body><div class="app">
-<div class="head"><h1>⚡ Forever DPS Lab <small style="color:#8f849d">Independent class simulation models</small></h1><span class="badge">v0.11 · Mage beta</span><span class="badge" id="evidence">Evidence: experimental</span></div>
+<div class="head"><h1>⚡ Forever DPS Lab <small style="color:#8f849d">Independent models · public talent-build links</small></h1><span class="badge">v0.12 · Shared builds</span><span class="badge" id="evidence">Evidence: experimental</span></div>
 <div class="class-switch"><button id="shamanTab" class="class-tab selected" type="button">⚡ Shaman · Enhancement</button><button id="mageTab" class="class-tab" type="button">✦ Mage · Fire / Frost</button></div>
 <div id="shamanApp">
 
@@ -78,7 +78,7 @@ html{scroll-behavior:smooth}.tabs .tab{cursor:pointer}.tabs .tab:focus-visible,.
 <section class="card"><h2>Stat weights <span class="badge">1 AP = 1.000</span></h2><div class="footer">Weights are generated from this exact character, build, rotation and encounter.</div><button class="btn primary" id="weights" style="width:100%;margin:8px 0">⚖ Calculate weights</button><div id="weightout" class="source">Run when your setup is ready.</div></section><section class="card" id="compare-section"><h2>Quick compare</h2><div class="fields" style="grid-template-columns:1fr 1fr"><div class="field"><label>A</label><select id="ca"><option>Windfury</option><option>Flametongue</option><option>Rockbiter</option></select></div><div class="field"><label>B</label><select id="cb"><option>Flametongue</option><option>Windfury</option><option>Rockbiter</option></select></div></div><button class="btn" id="compare" style="width:100%;margin-top:8px">Compare imbues</button><div id="cmp" style="margin-top:8px"></div></section>
 <section class="card" id="evidence-section"><h2>Checks / evidence</h2><div class="source"><span class="ok">✓</span> <b>Prior beta reference (requires rechecking against live build):</b> Stormstrike = normal weapon damage, 125 mana, 8s CD; its 12s debuff empowers the next Lightning Bolt, Chain Lightning or Earth Shock by 20%.<br><span class="ok">✓</span> T1 Enhancement 5P = -0.5s Stormstrike cooldown.<br><span class="ok">✓</span> Current Enhancement guide: Flame Shock lasts 12s; Fire Nova radiates from the active Fire Totem; Rage of the Farseer = +30% melee speed for 25s (cast-speed bonus removed Sep 24).<br><span class="warn">≈</span> <b>Modelled:</b> Maelstrom proc chance, several spell coefficients, armor and primary-stat conversions remain provisional. This remains an experimental model; not all talents, procs, spell coefficients or hit mechanics are implemented.<br><span class="warn">?</span> <b>Windfury:</b> working hypothesis is <b>no ICD</b>; 1.5s and 3s remain selectable test hypotheses until combat-log/server behavior is nailed down.</div></section>
 <section class="card"><h2>Event sample</h2><div class="log" id="log">Run the sim to generate a sample combat trace.</div></section>
-</aside></div><section class="card build-full" id="build-section"><h2>Build editor <span id="pts" style="color:var(--gold)"></span></h2><div class="build-tools"><button class="btn primary" id="loadPreset" type="button">Load 19/32 raid</button><button class="btn" id="loadHitPreset" type="button">Load 9/32/10 hit</button><button class="btn" id="clearTalents" type="button">Clear talents</button><span class="footer" id="presetStatus">Editable example, not a verified optimal build.</span></div><div class="talents" id="talents"></div><div class="footer">Left click adds, right click removes. The three trees follow the supplied talent list. September 24 patch: Elemental Alacrity moved to 10-point tier, Elemental Fury to 25-point tier. Exact column positions/prerequisites still require beta confirmation. Icons are illustrative Warcraft spell art; a few may differ from actual Forever icons. Only implemented talent effects change DPS. Mage has its own independent editor and separate spell-hit model. Buffs shown are modelling assumptions until verified.</div></section>
+</aside></div><section class="card build-full" id="build-section"><h2>Build editor <span id="pts" style="color:var(--gold)"></span></h2><div class="build-tools"><button class="btn primary" id="loadPreset" type="button">Load 19/32 raid</button><button class="btn" id="loadHitPreset" type="button">Load 9/32/10 hit</button><button class="btn" id="clearTalents" type="button">Clear talents</button><button class="btn" id="shareShaman" type="button">Copy Shaman build link</button><span class="footer" id="presetStatus">Editable example, not a verified optimal build.</span></div><div class="talents" id="talents"></div><div class="footer">Left click adds, right click removes. The three trees follow the supplied talent list. September 24 patch: Elemental Alacrity moved to 10-point tier, Elemental Fury to 25-point tier. Exact column positions/prerequisites still require beta confirmation. Icons are illustrative Warcraft spell art; a few may differ from actual Forever icons. Only implemented talent effects change DPS. Mage has its own independent editor and separate spell-hit model. Buffs shown are modelling assumptions until verified.</div></section>
 </div></div>
 <div id="mageApp" class="app" hidden>
 <section class="card mage-intro"><h2>Mage simulator <span class="badge">Fire / Frost · experimental</span></h2><p>Separate spell-casting model, gear inputs, talent trees and <b>1 Spell Power = 1.000</b> stat weights. Frostfire Bolt dual-school interactions and proc coefficients are test assumptions until confirmed with beta logs.</p></section>
@@ -107,7 +107,7 @@ html{scroll-behavior:smooth}.tabs .tab{cursor:pointer}.tabs .tab:focus-visible,.
 <div class="field"><label>Simulation GCD (sec)</label><input id="mGcd" type="number" value="1.5" min="1" max="2" step=".1"></div>
 </div><p class="footer">The default spell values are placeholders, not measured Forever level-60 coefficients. FoF is only modelled for Frostbolt/FFB as a selectable hypothesis. Hot Streak model currently tracks crit-granted stacks to reduce Pyroblast cast time; boss susceptibility and proc rules require logs.</p></section>
 <div class="mage-results"><section class="card"><h2>Mage simulation</h2><button class="btn primary" id="mRun" type="button">▶ Run Mage model</button><div id="mResult" class="mage-output">Choose talents, then run the Mage simulation.</div></section><section class="card"><h2>Mage stat weights <span class="badge">1 SP = 1.000</span></h2><button class="btn primary" id="mWeights" type="button">Calculate Mage weights</button><div id="mWeightOutput" class="mage-output">Mage uses its own spellcaster calculation, never Shaman's AP weights.</div></section></div>
-<section class="card"><h2>Mage · Talent trees <span id="mPointCount"></span></h2><div class="build-tools"><button class="btn primary" type="button" id="mFireFrostPreset">Load 0/34/17 Fire–Frost</button><button class="btn" type="button" id="mClear">Clear Mage talents</button><span id="mBuildStatus" class="footer">Ranks and tiers from beta build 69977; prerequisite arrows still need verification.</span></div><div id="mTalentTrees" class="talents"></div><p class="footer">Left click adds, right click removes. Source: beta build 69977 Mage talent reference. Talents with modelled effects influence the Mage calculation; support/PvP talents are displayed for build planning.</p></section>
+<section class="card"><h2>Mage · Talent trees <span id="mPointCount"></span></h2><div class="build-tools"><button class="btn primary" type="button" id="mFireFrostPreset">Load 0/34/17 Fire–Frost</button><button class="btn" type="button" id="mClear">Clear Mage talents</button><button class="btn" type="button" id="shareMage">Copy Mage build link</button><span id="mBuildStatus" class="footer">Ranks and tiers from beta build 69977; prerequisite arrows still need verification.</span></div><div id="mTalentTrees" class="talents"></div><p class="footer">Left click adds, right click removes. Source: beta build 69977 Mage talent reference. Talents with modelled effects influence the Mage calculation; support/PvP talents are displayed for build planning.</p></section>
 </div>
 <script>
 const trees={
@@ -422,7 +422,43 @@ function mageSim(over={}){const c={...mageConfig(),...over};let sum=0,sq=0,bd={}
 document.getElementById('mRun').onclick=()=>{mRun.disabled=true;mRun.textContent='Simulating Mage…';setTimeout(()=>{try{let r=mageSim();mResult.innerHTML='<div class="metricrow"><div class="metric"><b>'+r.dps.toFixed(1)+'</b><span>mean DPS (experimental)</span></div><div class="metric"><b>'+r.sd.toFixed(1)+'</b><span>std dev</span></div><div class="metric"><b>'+r.mana.toFixed(0)+'</b><span>remaining mana</span></div><div class="metric"><b>'+r.casts.toFixed(0)+'</b><span>average casts</span></div></div><p>'+Object.entries(r.bd).map(([k,v])=>k+': '+v.toFixed(1)+' DPS').join(' · ')+'</p>'}finally{mRun.disabled=false;mRun.textContent='▶ Run Mage model'}},20)};
 document.getElementById('mWeights').onclick=()=>{mWeights.disabled=true;mWeights.textContent='Calculating…';setTimeout(()=>{try{let c=mageConfig();c.iters=Math.max(1500,Math.min(5000,c.iters));const slope=(key,d)=>{let a={...c,[key]:c[key]+d},b={...c,[key]:Math.max(0,c[key]-d)};return (mageSim(a).dps-mageSim(b).dps)/(a[key]-b[key])};const sp=slope('sp',60),rows=[['SP',sp],['INT',slope('int',25)],['CRIT %',slope('crit',2)],['HIT %',slope('hit',2)],['HASTE %',slope('haste',3)],['MP5',slope('mp5',15)]];mWeightOutput.innerHTML='<table style="width:100%">'+rows.map(([k,v])=>'<tr><td>'+k+'</td><td style="text-align:right">'+(k==='SP'?'1.000':sp>0?(v/sp).toFixed(3):'n/a')+'</td></tr>').join('')+'</table><p class="footer">Independent Mage weight model; do not use for gearing until coefficients/procs are log-validated.</p>'}finally{mWeights.disabled=false;mWeights.textContent='Calculate Mage weights'}},20)};
 const shamanTab=document.getElementById('shamanTab'),mageTab=document.getElementById('mageTab');
-function pickClass(c){const mage=c==='mage';document.getElementById('shamanApp').hidden=mage;document.getElementById('mageApp').hidden=!mage;shamanTab.classList.toggle('selected',!mage);mageTab.classList.toggle('selected',mage);document.getElementById('evidence').textContent='Evidence: experimental · '+(mage?'Mage':'Shaman')}
+function pickClass(c){const mage=c==='mage';document.getElementById('shamanApp').hidden=mage;document.getElementById('mageApp').hidden=!mage;shamanTab.classList.toggle('selected',!mage);mageTab.classList.toggle('selected',mage);document.getElementById('evidence').textContent='Evidence: experimental · '+(mage?'Mage':'Shaman');const url=new URL(location.href);url.searchParams.set('class',mage?'mage':'shaman');history.replaceState(null,'',url)}
 shamanTab.onclick=()=>pickClass('shaman');mageTab.onclick=()=>pickClass('mage');
-renderMageTrees();pickClass('shaman');
+// v0.12: Class-aware links and compact, checked talent-build sharing.
+const cleanBuild=(trees,state)=>Object.fromEntries(Object.entries(trees).map(([key,items])=>[key,state[key].map((v,i)=>Math.max(0,Math.min(items[i][1],Number(v)||0)))]));
+function packBuild(trees,state){return Object.keys(trees).map(k=>state[k].join('.')).join('~')}
+function unpackBuild(raw,trees){
+ if(typeof raw!=='string'||raw.length>500)return null;
+ const pieces=raw.split('~'),keys=Object.keys(trees);
+ if(pieces.length!==keys.length)return null;
+ const data={};for(let i=0;i<keys.length;i++){
+  const key=keys[i],values=pieces[i].split('.').map(Number);
+  if(values.length!==trees[key].length||values.some((v,j)=>!Number.isInteger(v)||v<0||v>trees[key][j][1]))return null;
+  data[key]=values;
+ }return data;
+}
+function validShared(trees,state,cap){
+ if(Object.values(state).flat().reduce((a,b)=>a+b,0)>cap)return false;
+ return Object.keys(trees).every(k=>trees[k].every(([name,max,req],i)=>
+ !state[k][i]||trees[k].reduce((sum,t,j)=>sum+(t[2]<req?state[k][j]:0),0)>=req));
+}
+async function copyClassLink(cls){
+ const url=new URL(location.href);url.searchParams.set('class',cls);
+ url.searchParams.delete('sb');url.searchParams.delete('mb');
+ url.searchParams.set(cls==='mage'?'mb':'sb',packBuild(cls==='mage'?MAGE_TREES:trees,cls==='mage'?mState:st));
+ const output=cls==='mage'?mBuildStatus:presetStatus;
+ try { await navigator.clipboard.writeText(url.href);output.textContent='Build link copied. Anyone with it can open this talent setup.'; }
+ catch(e){output.textContent='Copy this URL: '+url.href;}
+}
+document.getElementById('shareShaman').onclick=()=>copyClassLink('shaman');
+document.getElementById('shareMage').onclick=()=>copyClassLink('mage');
+const u=new URL(location.href);
+const target=u.searchParams.get('class')==='mage'?'mage':'shaman';
+const sb=unpackBuild(u.searchParams.get('sb'),trees);
+if(sb&&validShared(trees,sb,maxpts())){st=sb;renderTal();presetStatus.textContent='Shaman build loaded from shared link.'}
+else if(u.searchParams.has('sb'))presetStatus.textContent='Shared Shaman build could not be loaded; check level and build legality.';
+const mb=unpackBuild(u.searchParams.get('mb'),MAGE_TREES);
+if(mb&&validShared(MAGE_TREES,mb,mageMax())){mState=mb;renderMageTrees();mBuildStatus.textContent='Mage build loaded from shared link.'}
+else if(u.searchParams.has('mb'))mBuildStatus.textContent='Shared Mage build could not be loaded; check level and build legality.';
+renderMageTrees();pickClass(target);
 </script></body></html>
