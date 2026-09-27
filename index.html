@@ -392,7 +392,22 @@ const MAGE_FF_PRESET={Arcane:{},Fire:{'Wake of Fire':2,Incineration:3,Ignite:5,'
 document.getElementById('mFireFrostPreset').onclick=()=>{if(mageMax()<51){mBuildStatus.textContent='Set level 60 before loading 51-point preset.';return;}let old=JSON.parse(JSON.stringify(mState));for(const k in MAGE_TREES)mState[k]=MAGE_TREES[k].map(([n,max])=>Math.min(max,MAGE_FF_PRESET[k][n]||0));if(mageTotal()!==51||Object.keys(MAGE_TREES).some(k=>!mageLegal(k))){mState=old;mBuildStatus.textContent='Preset validation failed — previous build restored.';return;}mBuildStatus.textContent='Fire 34 / Frost 17 loaded. Every point remains editable.';renderMageTrees()};
 document.getElementById('mClear').onclick=()=>{for(const k in mState)mState[k].fill(0);renderMageTrees()};
 document.getElementById('mLevel').onchange=renderMageTrees;
-function mageConfig(){const n=id=>Number(document.getElementById(id).value)||0;let intellect=n('mInt')+(mArcaneInt.checked?31:0)+(mMark.checked?12:0);if(mKings.checked)intellect*=1.1;return {dur:n('mDuration'),iters:Math.max(1,Math.min(10000,n('mIterations'))),mana:n('mMana'),int:intellect,sp:n('mSp')+n('mGearSp'),crit:n('mCrit')+n('mGearCrit'),hit:n('mHit'),haste:n('mHaste'),mp5:n('mMp5'),primary:mPrimary.value,dual:mDual.value,base:n('mBaseDmg'),coeff:n('mCoefficient'),fof:n('mFoFChance')/100,fofBoss:mFoFBoss.value==='1',gcd:n('mGcd')}}
+function mageConfig(rawAdjust={}){
+ const n=id=>Number(document.getElementById(id).value)||0;
+ const raw={int:n('mInt'),sp:n('mSp'),crit:n('mCrit'),hit:n('mHit'),haste:n('mHaste'),mp5:n('mMp5')};
+ for(const [key,delta] of Object.entries(rawAdjust)){
+  if(!(key in raw)||!Number.isFinite(delta))throw Error('Invalid Mage raw stat adjustment: '+key);
+  raw[key]+=delta;
+ }
+ const flatInt=(mArcaneInt.checked?31:0)+(mMark.checked?12:0);
+ const kingScale=mKings.checked?1.1:1;
+ return {dur:n('mDuration'),iters:Math.max(1,Math.min(10000,n('mIterations'))),
+  mana:n('mMana')+(rawAdjust.int||0)*kingScale*15,
+  int:(raw.int+flatInt)*kingScale,sp:raw.sp+n('mGearSp'),crit:raw.crit+n('mGearCrit'),
+  hit:raw.hit,haste:raw.haste,mp5:raw.mp5,primary:mPrimary.value,dual:mDual.value,
+  base:n('mBaseDmg'),coeff:n('mCoefficient'),fof:n('mFoFChance')/100,
+  fofBoss:mFoFBoss.value==='1',gcd:n('mGcd'),statContext:{kingScale}};
+}
 // Distinct Mage combat kernel. Single-target approximation, fixed reaction time and explicit modelling switches.
 function mageOnce(c,seed){
  let rand=(()=>{let s=seed|0;return()=>((s=Math.imul(s,1664525)+1013904223|0)>>>0)/4294967296})();
@@ -433,9 +448,31 @@ function mageOnce(c,seed){
  }
  return {dps:damage/c.dur,mana,bd:breakdown,casts};
 }
-function mageSim(over={}){const c={...mageConfig(),...over};let sum=0,sq=0,bd={},mana=0,casts=0;for(let i=1;i<=c.iters;i++){const r=mageOnce(c,i*7919);sum+=r.dps;sq+=r.dps*r.dps;mana+=r.mana;casts+=r.casts;for(const [k,v] of Object.entries(r.bd))bd[k]=(bd[k]||0)+v/c.dur}return {dps:sum/c.iters,sd:Math.sqrt(Math.max(0,sq/c.iters-(sum/c.iters)**2)),mana:mana/c.iters,casts:casts/c.iters,bd:Object.fromEntries(Object.entries(bd).map(([k,v])=>[k,v/c.iters]))};}
+function mageSim(over={}){const {rawAdjust={},...simOver}=over;const c={...mageConfig(rawAdjust),...simOver};let sum=0,sq=0,bd={},mana=0,casts=0;for(let i=1;i<=c.iters;i++){const r=mageOnce(c,i*7919);sum+=r.dps;sq+=r.dps*r.dps;mana+=r.mana;casts+=r.casts;for(const [k,v] of Object.entries(r.bd))bd[k]=(bd[k]||0)+v/c.dur}return {dps:sum/c.iters,sd:Math.sqrt(Math.max(0,sq/c.iters-(sum/c.iters)**2)),mana:mana/c.iters,casts:casts/c.iters,bd:Object.fromEntries(Object.entries(bd).map(([k,v])=>[k,v/c.iters]))};}
 document.getElementById('mRun').onclick=()=>{mRun.disabled=true;mRun.textContent='Simulating Mage…';setTimeout(()=>{try{let r=mageSim();mResult.innerHTML='<div class="metricrow"><div class="metric"><b>'+r.dps.toFixed(1)+'</b><span>mean DPS (experimental)</span></div><div class="metric"><b>'+r.sd.toFixed(1)+'</b><span>std dev</span></div><div class="metric"><b>'+r.mana.toFixed(0)+'</b><span>remaining mana</span></div><div class="metric"><b>'+r.casts.toFixed(0)+'</b><span>average casts</span></div></div><p>'+Object.entries(r.bd).map(([k,v])=>k+': '+v.toFixed(1)+' DPS').join(' · ')+'</p>'}finally{mRun.disabled=false;mRun.textContent='▶ Run Mage model'}},20)};
-document.getElementById('mWeights').onclick=()=>{mWeights.disabled=true;mWeights.textContent='Calculating…';setTimeout(()=>{try{let c=mageConfig();c.iters=Math.max(1500,Math.min(5000,c.iters));const slope=(key,d)=>{let a={...c,[key]:c[key]+d},b={...c,[key]:Math.max(0,c[key]-d)};return (mageSim(a).dps-mageSim(b).dps)/(a[key]-b[key])};const sp=slope('sp',60),rows=[['SP',sp],['INT',slope('int',25)],['CRIT %',slope('crit',2)],['HIT %',slope('hit',2)],['HASTE %',slope('haste',3)],['MP5',slope('mp5',15)]];mWeightOutput.innerHTML='<table style="width:100%">'+rows.map(([k,v])=>'<tr><td>'+k+'</td><td style="text-align:right">'+(k==='SP'?'1.000':sp>0?(v/sp).toFixed(3):'n/a')+'</td></tr>').join('')+'</table><p class="footer">Independent Mage weight model; do not use for gearing until coefficients/procs are log-validated.</p>'}finally{mWeights.disabled=false;mWeights.textContent='Calculate Mage weights'}},20)};
+document.getElementById('mWeights').onclick=()=>{
+ mWeights.disabled=true;mWeights.textContent='Calculating…';
+ setTimeout(()=>{try{
+  const base=mageConfig(),n=Math.max(1500,Math.min(5000,base.iters));
+  const specs=[['sp','SP',60],['int','INT',20],['crit','CRIT +1%',1],
+               ['hit','SPELL HIT +1%',1],['haste','HASTE +1%',1],['mp5','MP5',15]];
+  const inputs={sp:'mSp',int:'mInt',crit:'mCrit',hit:'mHit',haste:'mHaste',mp5:'mMp5'};
+  function slope(k,d){
+   const raw=Number(document.getElementById(inputs[k]).value)||0;
+   const neg=k==='hit'?0:Math.min(d,Math.max(0,raw));
+   const hi=mageSim({iters:n,rawAdjust:{[k]:d}});
+   const lo=mageSim({iters:n,rawAdjust:{[k]:-neg}});
+   return (hi.dps-lo.dps)/(d+neg);
+  }
+  const sp=slope('sp',60),fmt=x=>Number.isFinite(x)?x.toFixed(3):'n/a';
+  const rows=specs.map(([key,label,d])=>{let per=key==='sp'?sp:slope(key,d);return{label,per,weight:sp>0?per/sp:NaN}});
+  mWeightOutput.innerHTML='<p class="footer">Weights per <b>one extra unbuffed stat</b> after chosen group buffs. With Kings, 1 raw INT adds '+fmt(base.statContext.kingScale)+' effective INT and marginal mana (Classic-derived assumption). CRIT, HIT and HASTE are percentage points, not rating.</p>'+
+   '<table style="width:100%"><thead><tr><th style="text-align:left">Stat</th><th style="text-align:right">Weight (1 SP)</th><th style="text-align:right">DPS/unit</th></tr></thead><tbody>'+
+   rows.map(x=>'<tr><td>'+x.label+'</td><td style="text-align:right">'+fmt(x.weight)+'</td><td style="text-align:right">'+fmt(x.per)+'</td></tr>').join('')+'</tbody></table>'+
+   '<p class="footer">Independent Mage combat model; '+n.toLocaleString()+' paired-seed runs per scenario. Proc rates and coefficients are not yet log-validated.</p>';
+ }catch(e){mWeightOutput.textContent='Weight calculation failed: '+e.message}
+ finally{mWeights.disabled=false;mWeights.textContent='Calculate Mage weights'}},20);
+};
 const shamanTab=document.getElementById('shamanTab'),mageTab=document.getElementById('mageTab');
 function pickClass(c){const mage=c==='mage';document.getElementById('shamanApp').hidden=mage;document.getElementById('mageApp').hidden=!mage;shamanTab.classList.toggle('selected',!mage);mageTab.classList.toggle('selected',mage);document.getElementById('evidence').textContent='Evidence: experimental · '+(mage?'Mage':'Shaman');const url=new URL(location.href);url.searchParams.set('class',mage?'mage':'shaman');history.replaceState(null,'',url)}
 shamanTab.onclick=()=>pickClass('shaman');mageTab.onclick=()=>pickClass('mage');
