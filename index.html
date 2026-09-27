@@ -17,7 +17,7 @@ html{scroll-behavior:smooth}.tabs .tab{cursor:pointer}.tabs .tab:focus-visible,.
 
 .class-switch{display:flex;gap:8px;margin:0 0 12px}.class-tab{font:inherit;color:#ddd0ef;background:#221930;border:1px solid #443357;border-radius:9px;padding:12px 20px;cursor:pointer;font-weight:bold}.class-tab.selected{background:#54357d;border-color:#a481f0;color:white}#shamanApp[hidden],#mageApp[hidden]{display:none!important}.mage-results{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mage-intro p{margin:0;color:#c1b8d0}.mage-output{margin-top:12px}.cap-note{color:#e9cb80;font-size:10px;display:block;margin-top:4px}@media(max-width:800px){.mage-results{grid-template-columns:1fr}.class-switch{flex-wrap:wrap}}
 </style></head><body><div class="app">
-<div class="head"><h1>⚡ Forever DPS Lab <small style="color:#8f849d">Independent models · public talent-build links</small></h1><span class="badge">v0.13 · Buff-aware weights</span><span class="badge" id="evidence">Evidence: experimental</span></div>
+<div class="head"><h1>⚡ Forever DPS Lab <small style="color:#8f849d">Independent models · public talent-build links</small></h1><span class="badge">v0.14 · All-stat weight pass</span><span class="badge" id="evidence">Evidence: experimental</span></div>
 <div class="class-switch"><button id="shamanTab" class="class-tab selected" type="button">⚡ Shaman · Enhancement</button><button id="mageTab" class="class-tab" type="button">✦ Mage · Fire / Frost</button></div>
 <div id="shamanApp">
 
@@ -206,7 +206,11 @@ o.str+=bv('markWild','motwValue')+bv('soe','soeValue');
 o.agi+=bv('markWild','motwValue')+bv('goa','goaValue');
 o.int+=bv('markWild','motwValue')+bv('arcaneInt','aiValue');
 for(const [stat,id] of [['ap','weaponAP'],['str','weaponSTR'],['agi','weaponAGI'],['int','weaponINT'],['crit','weaponCrit'],['hit','weaponHit'],['haste','weaponHaste']])o[stat]+=+document.getElementById(id).value||0;
-const king=bv('kings','kingsValue');if(king){o.str*=1+king/100;o.agi*=1+king/100;o.int*=1+king/100;}
+const king=bv('kings','kingsValue'),kingScale=1+king/100;if(king){o.str*=kingScale;o.agi*=kingScale;o.int*=kingScale;}
+// Mana entered by the user is their current baseline pool. For weight perturbations
+// only, incremental unbuffed INT adds incremental maximum mana; no double-counting.
+o.mana+=15*(rawAdjust.int||0)*kingScale*(1+.02*talentRank('Ancestral Knowledge'));
+o.statContext={king,kingScale,intScale:kingScale*(1+.02*talentRank('Ancestral Knowledge'))};
 return o}
 function once(c,seed){
  // Event-driven 2H Enhancement prototype. The RNG has separate streams for swings, procs and spells.
@@ -217,9 +221,9 @@ function once(c,seed){
  const rank=n=>ranks[n]||0, damage={},trace=[];
  let time=0,mana=c.mana, nextSwing=0,gcd=0,ssReady=0,shockReady=0,novaReady=0,fsExpire=0,fsTick=Infinity,mw=0,mwExpire=0,wfLast=-Infinity,ssDebuff=0,flurry=0,flurryUntil=0,wfCount=0,maelstromProcs=0,bolts=0,flurryUptime=0,swingCount=0;
  const times=[];const add=(name,value)=>{if(value>0)damage[name]=(damage[name]||0)+value};
- const critical=Math.min(.9,Math.max(0,(c.crit+rank('Thundering Strikes')+c.agi/20)/100)); // AGI conversion placeholder
- const spellCrit=Math.min(.9,Math.max(0,(c.crit+rank('Thundering Strikes')+c.int/59.2)/100)); // placeholder
  const int=c.int*(1+.02*rank('Ancestral Knowledge'));
+ const critical=Math.min(.9,Math.max(0,(c.crit+rank('Thundering Strikes')+c.agi/20)/100)); // AGI conversion placeholder
+ const spellCrit=Math.min(.9,Math.max(0,(c.crit+rank('Thundering Strikes')+int/59.2)/100)); // placeholder
  const weaponAP=c.ap+2*c.str+int*(rank('Mental Dexterity')/3);
  const ap=weaponAP+(c.imbue==='Rockbiter'?c.rbAP*(1+.06667*rank('Elemental Weapons')):0);
  const sp=int*.15*rank('Mental Quickness');
@@ -327,16 +331,26 @@ function once(c,seed){
 function simulate(over={}){let {rawAdjust={},...simOver}=over;let c={...cfg(rawAdjust),...simOver},n=Math.min(c.iters,10000),sum=0,sum2=0,bd={},ma=0,w=0,f=0,last;for(let i=1;i<=n;i++){let r=once(c,i*7919);last=r;sum+=r.dps;sum2+=r.dps*r.dps;ma+=r.mana;w+=r.wfp;f+=r.fl;for(const k in r.dmg)bd[k]=(bd[k]||0)+r.dmg[k]/c.dur}let mean=sum/n;return{mean,sd:Math.sqrt(Math.max(0,sum2/n-mean*mean)),bd:Object.fromEntries(Object.entries(bd).map(([k,v])=>[k,v/n])),mana:ma/n,wfpm:w/n*60/c.dur,fl:f/n,last}}
 function show(r){dps.textContent=r.mean.toFixed(1);sd.textContent=r.sd.toFixed(1);oom.textContent=Math.max(0,r.mana).toFixed(0);wfpm.textContent=r.wfpm.toFixed(2);flup.textContent=(r.fl*100).toFixed(0)+'%';let arr=Object.entries(r.bd).sort((a,b)=>b[1]-a[1]),mx=Math.max(...arr.map(x=>x[1]),1);chart.innerHTML=arr.map(([k,v])=>`<div class=bar style="height:${Math.max(5,v/mx*145)}px"><i>${v.toFixed(0)}</i><span>${k}</span></div>`).join('');log.innerHTML=r.last.sample.join('<br>')||'No sampled proc events.'}
 run.onclick=()=>{run.textContent='Running…';setTimeout(()=>{let r=simulate();show(r);run.textContent=`▶ Run ${(+iters.value).toLocaleString()} iterations`},20)};iters.onchange=()=>run.textContent=`▶ Run ${(+iters.value).toLocaleString()} iterations`;compare.onclick=()=>{let a=simulate({imbue:ca.value,iters:1500}),b=simulate({imbue:cb.value,iters:1500}),delta=(b.mean/a.mean-1)*100;cmp.innerHTML=`<b>${ca.value}</b> ${a.mean.toFixed(1)} DPS<br><b>${cb.value}</b> ${b.mean.toFixed(1)} DPS<br><span class=${delta>0?'ok':'warn'}>${delta>=0?'+':''}${delta.toFixed(2)}%</span>`};function calcWeights(){
- let base=cfg(),n=Math.min(10000,Math.max(4000,base.iters)),ds={ap:100,str:25,agi:25,int:25,crit:3,hit:2,haste:5};
- let rows=[];
- // Raw, unbuffed stat deltas go through the same Kings and raid-buff pipeline.
- function slope(k,d){let raw=Number(document.getElementById(k).value)||0;let neg=['hit','haste','crit'].includes(k)?Math.min(d,raw):d;let hi=simulate({iters:n,rawAdjust:{[k]:d}}),lo=simulate({iters:n,rawAdjust:{[k]:-neg}});return (hi.mean-lo.mean)/(d+neg);}
- let apPer=slope('ap',ds.ap);
- for(const [k,d] of Object.entries(ds)){
-   let per=k==='ap'?apPer:slope(k,d),wt=apPer>0?per/apPer:NaN;
-   rows.push([k.toUpperCase(),wt,per]);
+ const base=cfg(),n=Math.min(10000,Math.max(4000,base.iters));
+ const specs=[['ap','AP',100],['str','STR',20],['agi','AGI',20],['int','INT',20],
+              ['crit','CRIT +1%',1],['hit','MELEE HIT +1%',1],['haste','HASTE +1%',1]];
+ function slope(k,d){
+  const raw=Number(document.getElementById(k).value)||0;
+  // Forward marginal value for Hit: centered steps can straddle the cap.
+  if(k==='hit')return (simulate({iters:n,rawAdjust:{hit:d}}).mean-simulate({iters:n}).mean)/d;
+  const neg=Math.min(d,Math.max(0,raw));
+  const hi=simulate({iters:n,rawAdjust:{[k]:d}});
+  const lo=simulate({iters:n,rawAdjust:{[k]:-neg}});
+  return (hi.mean-lo.mean)/(d+neg);
  }
- weightout.innerHTML='<table style="width:100%">'+rows.map(x=>`<tr><td>${x[0]}</td><td style="text-align:right"><b>${x[0]=='AP'?'1.000':Number.isFinite(x[1])?x[1].toFixed(3):'n/a'}</b></td><td style="text-align:right;color:var(--mut)">${x[2].toFixed(3)} DPS/stat</td></tr>`).join('')+'</table><div class="footer">Buff-aware paired-seed central finite differences, '+n.toLocaleString()+' runs per setting. WARNING: the combat model and some stat conversions are provisional; near-zero or negative weights may still be simulation noise or a model bug. Do not treat these as BiS weights yet.</div>';
+ const apPer=slope('ap',100),f=x=>Number.isFinite(x)?x.toFixed(3):'n/a';
+ const effects={ap:'1.000 AP',str:f(2*base.statContext.kingScale)+' AP',agi:f(base.statContext.kingScale)+' AGI',
+  int:f(base.statContext.intScale)+' INT',crit:'+1 pct point',hit:'+1 pct point',haste:'+1 pct point'};
+ const rows=specs.map(([key,label,d])=>{let per=key==='ap'?apPer:slope(key,d);return{key,label,per,weight:apPer>0?per/apPer:NaN}});
+ weightout.innerHTML='<p class="footer">Each result represents <b>one extra unbuffed stat</b>. All chosen gear, group buffs and Kings are applied again on every run. INT also gets Ancestral Knowledge and Mental Dexterity conversion; incremental INT adds 15 mana per effective point (provisional Classic assumption).</p>'+
+ '<table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left">Stat</th><th style="text-align:right">Effective change</th><th style="text-align:right">Weight (1 AP)</th><th style="text-align:right">DPS/unit</th></tr></thead><tbody>'+
+ rows.map(x=>'<tr><td>'+x.label+'</td><td style="text-align:right">'+effects[x.key]+'</td><td style="text-align:right"><b>'+f(x.weight)+'</b></td><td style="text-align:right">'+f(x.per)+'</td></tr>').join('')+'</tbody></table>'+
+ '<p class="footer">Kings: '+base.statContext.king+'%. 1 raw STR = '+f(base.statContext.kingScale*2)+' AP before other talent effects. CRIT, MELEE HIT and HASTE are <b>percentage points, not rating</b>. Near caps and thresholds, weights are local, not universal. '+n.toLocaleString()+' paired-seed iterations/scenario. Combat coefficients remain experimental.</p>';
 }
 weights.onclick=()=>{weights.textContent='Calculating…';setTimeout(()=>{calcWeights();weights.textContent='⚖ Calculate weights'},20)};
 for(const check of document.querySelectorAll('.buff input[type=checkbox]'))check.addEventListener('change',()=>{const selected=[...document.querySelectorAll('.buff input[type=checkbox]:checked')].map(x=>x.parentElement.textContent.trim());buffSummary.textContent=selected.length?'Active buffs: '+selected.join(', '):'No raid buffs selected.';});
