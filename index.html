@@ -515,5 +515,5 @@ else if(u.searchParams.has('sb'))presetStatus.textContent='Shared Shaman build c
 const mb=unpackBuild(u.searchParams.get('mb'),MAGE_TREES);
 if(mb&&validShared(MAGE_TREES,mb,mageMax())){mState=mb;renderMageTrees();mBuildStatus.textContent='Mage build loaded from shared link.'}
 else if(u.searchParams.has('mb'))mBuildStatus.textContent='Shared Mage build could not be loaded; check level and build legality.';
-renderMageTrees();pickClass(target);
+renderMageTrees();if(!u.searchParams.has('mb'))setMageRotation('frostfire');pickClass(target);
 </script></body></html>
