@@ -396,64 +396,63 @@ document.getElementById('mFrostfirePreset').onclick=()=>loadMagePreset(MAGE_FROS
 document.getElementById('mDeepFirePreset').onclick=()=>loadMagePreset(MAGE_DEEP_FIRE_PRESET,'Deep Fire 0/34/17','deepfire');
 document.getElementById('mClear').onclick=()=>{for(const k in mState)mState[k].fill(0);renderMageTrees()};
 document.getElementById('mLevel').onchange=renderMageTrees;
+function setMageRotation(profile){
+ mRotation.value=profile;
+ if(profile==='frostfire'){mPrimary.value='ffb';mDual.value='both';mUseScorch.checked=true;mUseIceLance.checked=true;mUsePyro.checked=true;mFoFBoss.value='1';}
+ if(profile==='deepfire'){mPrimary.value='fireball';mDual.value='fire';mUseScorch.checked=true;mUseIceLance.checked=false;mUsePyro.checked=true;}
+}
+mRotation.onchange=()=>{if(mRotation.value!=='custom')setMageRotation(mRotation.value)};
+for(const el of [mPrimary,mDual,mFoFBoss,mUseScorch,mUseIceLance,mUsePyro])el.addEventListener('change',()=>{if(mRotation.value!=='custom')mRotation.value='custom'});
 function mageConfig(rawAdjust={}){
  const n=id=>Number(document.getElementById(id).value)||0;
  const raw={int:n('mInt'),sp:n('mSp'),crit:n('mCrit'),hit:n('mHit'),haste:n('mHaste'),mp5:n('mMp5')};
- for(const [key,delta] of Object.entries(rawAdjust)){
-  if(!(key in raw)||!Number.isFinite(delta))throw Error('Invalid Mage raw stat adjustment: '+key);
-  raw[key]+=delta;
- }
- const flatInt=(mArcaneInt.checked?31:0)+(mMark.checked?12:0);
- const kingScale=mKings.checked?1.1:1;
- return {dur:n('mDuration'),iters:Math.max(1,Math.min(10000,n('mIterations'))),
-  mana:n('mMana')+(rawAdjust.int||0)*kingScale*15,
-  int:(raw.int+flatInt)*kingScale,sp:raw.sp+n('mGearSp'),crit:raw.crit+n('mGearCrit'),
-  hit:raw.hit,haste:raw.haste,mp5:raw.mp5,primary:mPrimary.value,dual:mDual.value,
-  base:n('mBaseDmg'),coeff:n('mCoefficient'),fof:n('mFoFChance')/100,
-  fofBoss:mFoFBoss.value==='1',gcd:n('mGcd'),statContext:{kingScale}};
+ for(const [key,delta] of Object.entries(rawAdjust)){if(!(key in raw)||!Number.isFinite(delta))throw Error('Invalid Mage raw stat adjustment: '+key);raw[key]+=delta;}
+ const flatInt=(mArcaneInt.checked?31:0)+(mMark.checked?12:0),kingScale=mKings.checked?1.1:1;
+ return {dur:n('mDuration'),iters:Math.max(1,Math.min(10000,n('mIterations'))),mana:n('mMana')+(rawAdjust.int||0)*kingScale*15,int:(raw.int+flatInt)*kingScale,sp:raw.sp+n('mGearSp'),crit:raw.crit+n('mGearCrit'),hit:raw.hit,haste:raw.haste,mp5:raw.mp5,primary:mPrimary.value,dual:mDual.value,fof:n('mFoFChance')/100,fofBoss:mFoFBoss.value==='1',gcd:n('mGcd'),scorchRefresh:n('mScorchRefresh'),useScorch:mUseScorch.checked,useIce:mUseIceLance.checked,usePyro:mUsePyro.checked,statContext:{kingScale}};
 }
 // Distinct Mage combat kernel. Single-target approximation, fixed reaction time and explicit modelling switches.
 function mageOnce(c,seed){
  let rand=(()=>{let s=seed|0;return()=>((s=Math.imul(s,1664525)+1013904223|0)>>>0)/4294967296})();
- let t=0,mana=c.mana,damage=0,breakdown={},casts=0,fofCharges=0,hot=0,pyroCD=0,combEnd=-1,combUsed=false,scorchStacks=0;
- let fire=c.primary!=='frostbolt',frost=c.primary!=='fireball',both=c.primary==='ffb',fs=both?(c.dual==='both'||c.dual==='fire'):fire,ice=both?(c.dual==='both'||c.dual==='frost'):frost;
- let hit=Math.min(.99,.83+(c.hit+mageRank('Elemental Precision')*(fire||frost?1:0))/100);
- let crit=Math.min(.95,(c.crit+c.int/60+mageRank('Critical Mass')*(fire?2:0)+mageRank('Arcane Instability'))/100);
- let haste=1+c.haste/100;
- const tick=(seconds)=>{let step=Math.max(0,Math.min(seconds,c.dur-t));mana=Math.min(c.mana,mana+step*c.mp5/5);t+=step};
- const add=(name,val)=>{damage+=val;breakdown[name]=(breakdown[name]||0)+val};
- const apply=(name,val,critBonus=0)=>{if(rand()>hit){casts++;return false}let isCrit=rand()<Math.min(.99,crit+critBonus);let multiplier=isCrit?(1.5+((name!=='Pyroblast'&&ice)?mageRank('Ice Shards')*.1:0)):1;let d=val*multiplier;
- const spellFire=name==='Pyroblast'||(name!=='Frostbolt'&&fs);const spellFrost=name!=='Pyroblast'&&name!=='Fireball'&&ice;
- if(spellFire)d*=1+mageRank('Fire Power')*.02; if(spellFrost)d*=1+mageRank('Piercing Ice')*.02;
- add(name,d);casts++;
- if(isCrit&&spellFire&&mageRank('Ignite'))add('Ignite',d*.08*mageRank('Ignite'));
- if(isCrit&&mageRank('Hot Streak')&&spellFire&&name!=='Pyroblast')hot=Math.min(3,hot+1);
- if(isCrit&&mageRank('Master of Elements')&&(spellFire||spellFrost))mana=Math.min(c.mana,mana+200*mageRank('Master of Elements')*.1);
- if(mageRank('Fingers of Frost')&&spellFrost&&rand()<c.fof)fofCharges=2;
- return isCrit;
+ let t=0,mana=c.mana,damage=0,breakdown={},casts=0,scorchStacks=0,scorchExpire=0,hot=0,hotExpire=0,fofCharges=0,fofExpire=0,oomTime=0;
+ const haste=1+c.haste/100;
+ const spells={
+  ffb:{name:'Frostfire Bolt',school:'both',base:308.5,coeff:.814,dot:57,dotCoeff:0,cost:370,cast:3,qualifiesHot:true,chill:true},
+  fireball:{name:'Fireball',school:'fire',base:638,coeff:1,dot:72,dotCoeff:0,cost:395,cast:3.5,qualifiesHot:true,chill:false},
+  frostbolt:{name:'Frostbolt',school:'frost',base:515,coeff:.814,dot:0,dotCoeff:0,cost:290,cast:3,qualifiesHot:false,chill:true},
+  scorch:{name:'Scorch',school:'fire',base:258.5,coeff:.429,dot:0,dotCoeff:0,cost:150,cast:1.5,qualifiesHot:true,chill:false},
+  pyro:{name:'Pyroblast',school:'fire',base:610.5,coeff:1,dot:212,dotCoeff:.6,cost:440,cast:6,qualifiesHot:false,chill:false},
+  ice:{name:'Ice Lance',school:'frost',base:152,coeff:.143,dot:0,dotCoeff:0,cost:160,cast:0,qualifiesHot:false,chill:false}
  };
+ const tick=seconds=>{const step=Math.max(0,Math.min(seconds,c.dur-t));mana=Math.min(c.mana,mana+step*c.mp5/5);t+=step;if(t>=hotExpire)hot=0;if(t>=fofExpire)fofCharges=0;if(t>=scorchExpire)scorchStacks=0};
+ const add=(name,val)=>{if(val>0){damage+=val;breakdown[name]=(breakdown[name]||0)+val}};
+ const schoolFlags=spell=>{let fire=spell.school==='fire'||spell.school==='both',frost=spell.school==='frost'||spell.school==='both';if(spell.school==='both'){if(c.dual==='fire')frost=false;if(c.dual==='frost')fire=false}return{fire,frost}};
+ function cast(spell,opts={}){
+  if(mana<spell.cost)return{cast:false,landed:false,crit:false};
+  mana-=spell.cost;tick(Math.max(c.gcd,spell.cast/haste));
+  const {fire,frost}=schoolFlags(spell),hitChance=Math.min(.99,.83+(c.hit+((fire||frost)?mageRank('Elemental Precision'):0))/100);
+  casts++;if(rand()>hitChance)return{cast:true,landed:false,crit:false};
+  let critChance=(c.crit+c.int/60+mageRank('Arcane Instability'))/100;if(fire)critChance+=.02*mageRank('Critical Mass');if(opts.frozen&&mageRank('Shatter'))critChance+=.17*mageRank('Shatter');critChance=Math.max(0,Math.min(.99,critChance));
+  const crit=rand()<critChance;let mult=1;if(fire)mult*=1+.02*mageRank('Fire Power');if(frost)mult*=1+.02*mageRank('Piercing Ice');if(fire&&scorchStacks)mult*=1+.03*scorchStacks;
+  let direct=(spell.base+c.sp*spell.coeff)*mult;if(opts.frozen&&spell===spells.ice)direct*=4;
+  let critMult=1.5;if(frost)critMult+=.1*mageRank('Ice Shards');if(crit)direct*=critMult;
+  add(spell.name,direct);if(spell.dot)add(spell.name+' DoT',(spell.dot+c.sp*spell.dotCoeff)*mult);
+  if(crit&&fire&&mageRank('Ignite'))add('Ignite',direct*.08*mageRank('Ignite'));
+  if(crit&&spell.qualifiesHot&&mageRank('Heating Up')){hot=Math.min(3,hot+1);hotExpire=t+20}
+  if(crit&&mageRank('Master of Elements')&&(fire||frost))mana=Math.min(c.mana,mana+spell.cost*.1*mageRank('Master of Elements'));
+  if(spell.chill&&mageRank('Fingers of Frost')&&c.fofBoss&&rand()<c.fof){fofCharges=2;fofExpire=t+15}
+  return{cast:true,landed:true,crit};
+ }
  while(t<c.dur-1e-7){
- if(!combUsed&&mageRank('Combustion')){combUsed=true;combEnd=Math.min(t+15,c.dur)}
- let isFfb=c.primary==='ffb';let isFireball=c.primary==='fireball';let isFrostbolt=c.primary==='frostbolt';
- let name=isFfb?'Frostfire Bolt':isFireball?'Fireball':'Frostbolt';let cost=isFfb?315:isFireball?395:290;
- let casting=(isFfb?3:isFireball?3.5:3)-(isFfb||isFireball?mageRank('Improved Fireball')*.1:mageRank('Improved Frostbolt')*.1);
- if(isFfb&&mageRank('Hot Streak')&&hot>=3&&mageRank('Pyroblast')&&mana>=500){
- let pyCast=6-hot*1.5;tick(Math.max(c.gcd,pyCast/haste));mana-=500;apply('Pyroblast',810+c.sp*.90,combEnd>t?0.1:0);hot=0;continue;
+  if(mana<100){oomTime+=.25;tick(.25);continue}
+  if(c.useScorch&&mageRank('Improved Scorch')&&(scorchStacks<5||scorchExpire-t<=c.scorchRefresh)){const r=cast(spells.scorch);if(!r.cast){tick(.25);continue}if(r.landed){scorchStacks=Math.min(5,scorchStacks+1);scorchExpire=t+30}continue}
+  if(c.usePyro&&mageRank('Heating Up')&&mageRank('Pyroblast')&&hot>=3){const p={...spells.pyro,cast:spells.pyro.cast*(1-.25*hot)};const r=cast(p);if(!r.cast){tick(.25);continue}hot=0;hotExpire=0;continue}
+  if(c.useIce&&mageRank('Ice Lance')&&mageRank('Fingers of Frost')&&fofCharges>0){const r=cast(spells.ice,{frozen:true});if(!r.cast){tick(.25);continue}fofCharges=Math.max(0,fofCharges-1);continue}
+  const filler=spells[c.primary]||spells.ffb;if(!cast(filler).cast){tick(.25);continue}
  }
- if(mana<cost){tick(.25);continue}
- if(isFfb&&mageRank('Frost Channeling'))cost*=1-.05*mageRank('Frost Channeling');
- mana-=cost;tick(Math.max(c.gcd,casting/haste));
- let base=isFfb?c.base:isFireball?c.base*1.05:c.base*.87;
- let v=base+c.sp*c.coeff;
- // Frozen boss interaction disabled by default pending in-game evidence; avoid silently applying Shatter.
- let frozenCrit=(fofCharges>0&&c.fofBoss&&mageRank('Shatter'))?mageRank('Shatter')*.17:0;
- apply(name,v,(combEnd>t?0.1:0)+frozenCrit);
- if(fofCharges>0)fofCharges--;
- }
- return {dps:damage/c.dur,mana,bd:breakdown,casts};
+ return{dps:damage/c.dur,mana,bd:breakdown,casts,extra:{scorchStacks,hot,fofCharges,oomTime}};
 }
 function mageSim(over={}){const {rawAdjust={},...simOver}=over;const c={...mageConfig(rawAdjust),...simOver};let sum=0,sq=0,bd={},mana=0,casts=0;for(let i=1;i<=c.iters;i++){const r=mageOnce(c,i*7919);sum+=r.dps;sq+=r.dps*r.dps;mana+=r.mana;casts+=r.casts;for(const [k,v] of Object.entries(r.bd))bd[k]=(bd[k]||0)+v/c.dur}return {dps:sum/c.iters,sd:Math.sqrt(Math.max(0,sq/c.iters-(sum/c.iters)**2)),mana:mana/c.iters,casts:casts/c.iters,bd:Object.fromEntries(Object.entries(bd).map(([k,v])=>[k,v/c.iters]))};}
-document.getElementById('mRun').onclick=()=>{mRun.disabled=true;mRun.textContent='Simulating Mage…';setTimeout(()=>{try{let r=mageSim();mResult.innerHTML='<div class="metricrow"><div class="metric"><b>'+r.dps.toFixed(1)+'</b><span>mean DPS (experimental)</span></div><div class="metric"><b>'+r.sd.toFixed(1)+'</b><span>std dev</span></div><div class="metric"><b>'+r.mana.toFixed(0)+'</b><span>remaining mana</span></div><div class="metric"><b>'+r.casts.toFixed(0)+'</b><span>average casts</span></div></div><p>'+Object.entries(r.bd).map(([k,v])=>k+': '+v.toFixed(1)+' DPS').join(' · ')+'</p>'}finally{mRun.disabled=false;mRun.textContent='▶ Run Mage model'}},20)};
+document.getElementById('mRun').onclick=()=>{mRun.disabled=true;mRun.textContent='Simulating Mage…';setTimeout(()=>{try{let r=mageSim();mResult.innerHTML='<div class="metricrow"><div class="metric"><b>'+r.dps.toFixed(1)+'</b><span>mean DPS (experimental)</span></div><div class="metric"><b>'+r.sd.toFixed(1)+'</b><span>std dev</span></div><div class="metric"><b>'+r.mana.toFixed(0)+'</b><span>remaining mana</span></div><div class="metric"><b>'+r.casts.toFixed(0)+'</b><span>average casts</span></div></div><p><b>Rotation:</b> '+mRotation.options[mRotation.selectedIndex].text+' · filler '+mPrimary.options[mPrimary.selectedIndex].text+'</p><p>'+Object.entries(r.bd).sort((a,b)=>b[1]-a[1]).map(([k,v])=>k+': '+v.toFixed(1)+' DPS').join(' · ')+'</p>'}finally{mRun.disabled=false;mRun.textContent='▶ Run Mage model'}},20)};
 document.getElementById('mWeights').onclick=()=>{
  mWeights.disabled=true;mWeights.textContent='Calculating…';
  setTimeout(()=>{try{
